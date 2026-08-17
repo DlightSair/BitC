@@ -9,6 +9,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 add_executable(bitC
     src/main.c
     src/display.c
+    src/helper.c
 )
 
 target_include_directories(bitC PRIVATE headers)

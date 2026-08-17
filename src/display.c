@@ -1,9 +1,5 @@
 #include "macros.h"
-
-inline static int get_bit(U64 bitboard, int square)
-{
-    return ( (bitboard) & (1ULL << square) ) ? 1 : 0;
-}
+#include "display.h"
 
 
 
@@ -17,7 +13,9 @@ void printBitBoard(U64 bitboard)
         {
             int square = rank * BOARD_SIZE + file;
 
-            printf("%d ", get_bit( bitboard , square ));
+            if(!file) printf("  %d | ", BOARD_SIZE - rank);
+
+            printf("%d ", get( bitboard , square ));
 
         }
 
@@ -25,5 +23,8 @@ void printBitBoard(U64 bitboard)
 
     }
 
-    printf("\n");
+    printf("     -----------------\n");
+    printf("      a b c d e f g h\n");
+    printf("\n  BitBoard: %llu\n\n", bitboard);
+
 }
