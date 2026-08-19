@@ -5,6 +5,8 @@
 
 // HELPER.c
 void printBoard(); // FOR COPY PASTE EASE
+void displayNotFile();
+void displayTwoNotFile();
 
 
 // DISPLAY.C

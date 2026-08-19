@@ -29,4 +29,21 @@ enum {
 
 
 
+// CONSTANTS
+
+// Values gotten from helper.c : displayNotFile()
+
+static const U64 notA = 18374403900871474942ULL;
+static const U64 notB = 18302063728033398269ULL;
+static const U64 notC = 18157383382357244923ULL;
+static const U64 notD = 17868022691004938231ULL;
+static const U64 notE = 17289301308300324847ULL;
+static const U64 notF = 16131858542891098079ULL;
+static const U64 notG = 13816973012072644543ULL;
+static const U64 notH = 9187201950435737471ULL;
+
+static const U64 notAB = 18229723555195321596ULL;
+static const U64 notGH = 4557430888798830399ULL;
+
+
 #endif
