@@ -12,7 +12,6 @@ void printBoard()
         {
             printf("%c%d, ", charFile[file], BOARD_SIZE - rank);
         }
-
         printf("\n");
 
     }
@@ -33,14 +32,11 @@ void displayNotFile()
             for( int file = 0; file < BOARD_SIZE; file++)
             {
                 int square = rank*BOARD_SIZE + file;
-
                 if( file == k){
                     remove(not_file, square);
                 }
             }
-
             printf("\n");
-
         }
 
         printf("\n  NOT %c FILE\n\n", charFile[k]);
@@ -61,7 +57,6 @@ void displayTwoNotFile()
         for( int file = 0; file < BOARD_SIZE; file++)
         {
             int square = rank*BOARD_SIZE + file;
-
             if( file == 6 || file == 7){
                 remove(not_file, square);
             }
