@@ -5,6 +5,18 @@
 
 #define U64 unsigned long long
 #define BOARD_SIZE 8
+#define SIZE BOARD_SIZE*BOARD_SIZE
+
+
+// STRUCT DATA TYPE FOR ATTACK TABLE
+
+typedef struct 
+{
+    U64 pawn[2][SIZE];
+    U64 knight[SIZE];
+
+} attackTables;
+
 
 
 
@@ -15,6 +27,11 @@
 
 
 // ENUMS
+
+enum {
+    WHITE,
+    BLACK
+};
 
 enum {
     a8, b8, c8, d8, e8, f8, g8, h8, 

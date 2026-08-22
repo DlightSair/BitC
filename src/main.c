@@ -1,11 +1,14 @@
 #include "macros.h"
-#include "display.h"
+#include "header.h"
 
 int main()
 {
-   
-    displayTwoNotFile();
-    
+    attackTables *attack;
+
+    init_reaper_moves(attack);
+
+    printBitBoard(attack->knight[h1]);
+
 
     return 0;
 }

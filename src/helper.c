@@ -1,5 +1,5 @@
 #include "macros.h"
-#include "display.h"
+#include "header.h"
 
 
 void printBoard()

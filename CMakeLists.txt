@@ -10,6 +10,8 @@ add_executable(bitC
     src/main.c
     src/display.c
     src/helper.c
+    src/attack_tables.c
+    src/init_attack.c
 )
 
 target_include_directories(bitC PRIVATE headers)
