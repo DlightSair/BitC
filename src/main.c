@@ -7,7 +7,7 @@ int main()
 
     init_reaper_moves(attack);
 
-    printBitBoard(attack->knight[h1]);
+    printBitBoard(maskBishopAttacks(d4));
 
 
     return 0;

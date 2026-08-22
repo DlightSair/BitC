@@ -10,8 +10,10 @@ void displayTwoNotFile();
 
 
 // ATTACKTABLES.c
-U64 getPawnAttack(int side, int board);
-U64 getKnightAttack(int piece);
+U64 maskPawnAttacks(int side, int board);
+U64 maskKnightAttacks(int piece);
+U64 maskKingAttacks(int piece);
+U64 maskBishopAttacks(int piece);
 
 
 // INIT ATTACK TABLE

@@ -5,7 +5,7 @@
 
 #define U64 unsigned long long
 #define BOARD_SIZE 8
-#define SIZE BOARD_SIZE*BOARD_SIZE
+#define SIZE 64
 
 
 // STRUCT DATA TYPE FOR ATTACK TABLE
@@ -14,6 +14,7 @@ typedef struct
 {
     U64 pawn[2][SIZE];
     U64 knight[SIZE];
+    U64 king[SIZE];
 
 } attackTables;
 
