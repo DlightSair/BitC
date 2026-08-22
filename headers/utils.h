@@ -1,11 +1,12 @@
-#ifndef MACRO_H
-#define MACRO_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <stdio.h>
 
 #define U64 unsigned long long
 #define BOARD_SIZE 8
 #define SIZE 64
+
 
 
 // STRUCT DATA TYPE FOR ATTACK TABLE
@@ -19,12 +20,26 @@ typedef struct
 } attackTables;
 
 
+// GLOBAL VARIABLE FOR ATTACK LOOKUP
+extern attackTables attackLookup;
+
+
+//
+//
+//
 
 
 // Operations MACROS
 #define get(bitboard, square) (bitboard & (1ULL << square)) ? 1: 0
 #define add(bitboard, square) (bitboard |= (1ULL << square))
 #define remove(bitboard, square) (bitboard &= ~(1ULL << square))
+
+#define count_bits(bitboard) __builtin_popcountll(bitboard)
+#define get_LSB_index(bitboard) __builtin_ctzll(bitboard)
+
+//
+//
+//
 
 
 // ENUMS
@@ -44,6 +59,7 @@ enum {
     a2, b2, c2, d2, e2, f2, g2, h2, 
     a1, b1, c1, d1, e1, f1, g1, h1
 };
+
 
 
 

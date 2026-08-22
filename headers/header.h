@@ -1,7 +1,7 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include "macros.h"
+#include "utils.h"
 
 // HELPER.c
 void printBoard(); // FOR COPY PASTE EASE
@@ -17,8 +17,13 @@ U64 maskBishopAttacks(int piece);
 U64 maskRookAttacks(int piece);
 
 
+
+U64 getRookAttacks(int piece, U64 block);
+U64 getBishopAttacks(int piece, U64 block);
+
+
 // INIT ATTACK TABLE
-void init_reaper_moves(attackTables *attack);
+void init_reaper_moves();
 
 // DISPLAY.C
 void printBitBoard(U64 bitboard);

@@ -1,13 +1,20 @@
-#include "macros.h"
+#include "utils.h"
 #include "header.h"
+
+// GLOBAL VARIBLE ATTACK FOR ATTACK LOOKUP
+attackTables attackLookup;
+
+
 
 int main()
 {
-    attackTables *attack;
+    init_reaper_moves();
 
-    init_reaper_moves(attack);
+    U64 block = 0ULL;
+    add(block, c5); add(block, d7);
 
-    printBitBoard(maskRookAttacks(a6));
+    printBitBoard(block);
+    printf("%d", count_bits(block));
 
 
     return 0;
