@@ -14,6 +14,7 @@ U64 maskPawnAttacks(int side, int board);
 U64 maskKnightAttacks(int piece);
 U64 maskKingAttacks(int piece);
 U64 maskBishopAttacks(int piece);
+U64 maskRookAttacks(int piece);
 
 
 // INIT ATTACK TABLE

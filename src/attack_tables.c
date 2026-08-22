@@ -94,3 +94,28 @@ U64 maskBishopAttacks(int piece)
 }
 
 
+U64 maskRookAttacks(int piece)
+{
+    U64 attack = 0ULL;
+    
+    int curRank = piece / BOARD_SIZE;
+    int curFile = piece % BOARD_SIZE;
+
+    int r, f;
+
+    for(r = curRank-1, f = curFile; r > 0 ; r--)
+        attack |= ( 1ULL << ( r * BOARD_SIZE + f ));
+
+    for(r = curRank, f = curFile-1; f > 0 ; f--)
+        attack |= ( 1ULL << ( r * BOARD_SIZE + f ));
+
+    for(r = curRank+1, f = curFile; r < BOARD_SIZE-1 ; r++)
+        attack |= ( 1ULL << ( r * BOARD_SIZE + f ));
+    
+   for(r = curRank, f = curFile+1; f < BOARD_SIZE-1 ; f++)
+        attack |= ( 1ULL << ( r * BOARD_SIZE + f ));
+
+
+    return attack;
+}
+
