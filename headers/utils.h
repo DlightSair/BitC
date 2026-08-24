@@ -21,7 +21,7 @@ typedef struct
 
 
 // GLOBAL VARIABLE FOR ATTACK LOOKUP
-extern attackTables attackLookup;
+extern const attackTables attackLookup;
 
 
 //

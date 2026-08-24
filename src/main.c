@@ -1,20 +1,17 @@
 #include "utils.h"
 #include "header.h"
 
-// GLOBAL VARIBLE ATTACK FOR ATTACK LOOKUP
-attackTables attackLookup;
-
 
 
 int main()
 {
-    init_reaper_moves();
+    init_attack_lookup();
 
     U64 block = 0ULL;
     add(block, c5); add(block, d7);
 
     printBitBoard(block);
-    printf("%d", count_bits(block));
+    printf("%d", get_LSB_index(block));
 
 
     return 0;

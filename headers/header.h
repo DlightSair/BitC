@@ -23,7 +23,10 @@ U64 getBishopAttacks(int piece, U64 block);
 
 
 // INIT ATTACK TABLE
-void init_reaper_moves();
+void init_reaper_moves(attackTables *attack);
+void init_attack_lookup();
+
+
 
 // DISPLAY.C
 void printBitBoard(U64 bitboard);
