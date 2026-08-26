@@ -1,10 +1,29 @@
 #include "utils.h"
 #include "header.h"
 
-void change_random_number(unsigned int *number)
+U32 current = 1804289383;
+
+
+U32 get_random_U32()
 {
-    // XORSHIFT32 
-    *number ^= *number << 13;
-    *number ^= *number >> 17;
-    *number ^= *number << 5;
+    U32 number = current;
+
+    number ^= number << 13;
+    number ^= number >> 17;
+    number ^= number << 5;
+
+    current = number;
+    return number;
+}
+
+
+U64 get_random_U64()
+{
+    return (U64)get_random_U32() | ((U64)(get_random_U32()) << 32);
+}
+
+
+U64 get_magnic_number_candidate()
+{
+    return get_random_U64() & get_random_U64() & get_random_U64();
 }

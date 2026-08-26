@@ -75,10 +75,12 @@ void displayTwoNotFile()
 }
 
 
-void print_relevent_occupancy(int piece)    // 1 for bishop, 0 for rook (FOR NOW)
+// RELEVENT OCCUPANCY FOR ROOK AND BISHOP
+
+void print_relevent_occupancy(int piece)  
 {
 
-    U64 (*maskAttack)(int) = (piece) ? maskBishopAttacks : maskRookAttacks;
+    U64 (*maskAttack)(int) = (piece == BISHOP) ? maskBishopAttacks : maskRookAttacks;
 
     for( int rank = 0; rank < BOARD_SIZE; rank++){
         for(int file = 0; file < BOARD_SIZE; file++){

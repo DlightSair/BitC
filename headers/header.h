@@ -49,6 +49,11 @@ void printBitBoard(U64 bitboard);
 
 
 // RANDOM NUMBER
-void change_random_number(unsigned int *number);
+U32 get_random_U32();
+U64 get_random_U64();
+U64 get_magnic_number_candidate();
+
+
+
 
 #endif
