@@ -2,6 +2,8 @@
 #include "header.h"
 
 
+// FOR FINDING CONSTANT VALUES AND CREATING LOOKUPS
+
 void printBoard()
 {
     char charFile[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
@@ -70,4 +72,20 @@ void displayTwoNotFile()
     printBitBoard( not_file );
 
     
+}
+
+
+void print_relevent_occupancy(int piece)    // 1 for bishop, 0 for rook (FOR NOW)
+{
+
+    U64 (*maskAttack)(int) = (piece) ? maskBishopAttacks : maskRookAttacks;
+
+    for( int rank = 0; rank < BOARD_SIZE; rank++){
+        for(int file = 0; file < BOARD_SIZE; file++){
+            int square = rank*BOARD_SIZE + file;
+
+            printf("%d, ", count_bits(maskAttack(square)));
+        }
+        printf("\n");
+    }
 }

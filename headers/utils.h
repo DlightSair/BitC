@@ -3,9 +3,30 @@
 
 #include <stdio.h>
 
+/*
+    In this header
+
+    -MACROS
+    -STRUCT
+    -ENUMS
+    -CONSTANTS
+
+
+*/
+
+
+
 #define U64 unsigned long long
 #define BOARD_SIZE 8
 #define SIZE 64
+
+// Operations MACROS
+#define get(bitboard, square) (bitboard & (1ULL << square)) ? 1: 0
+#define add(bitboard, square) (bitboard |= (1ULL << square))
+#define remove(bitboard, square) (bitboard &= ~(1ULL << square))
+
+#define count_bits(bitboard) __builtin_popcountll(bitboard)
+#define get_LSB_index(bitboard) __builtin_ctzll(bitboard)
 
 
 
@@ -19,27 +40,6 @@ typedef struct
 
 } attackTables;
 
-
-// GLOBAL VARIABLE FOR ATTACK LOOKUP
-extern const attackTables attackLookup;
-
-
-//
-//
-//
-
-
-// Operations MACROS
-#define get(bitboard, square) (bitboard & (1ULL << square)) ? 1: 0
-#define add(bitboard, square) (bitboard |= (1ULL << square))
-#define remove(bitboard, square) (bitboard &= ~(1ULL << square))
-
-#define count_bits(bitboard) __builtin_popcountll(bitboard)
-#define get_LSB_index(bitboard) __builtin_ctzll(bitboard)
-
-//
-//
-//
 
 
 // ENUMS
@@ -65,6 +65,10 @@ enum {
 
 // CONSTANTS
 
+// GLOBAL VARIABLE FOR ATTACK LOOKUP
+extern const attackTables attackLookup;
+
+
 // Values gotten from helper.c : displayNotFile()
 
 static const U64 notA = 18374403900871474942ULL;
@@ -78,6 +82,30 @@ static const U64 notH = 9187201950435737471ULL;
 
 static const U64 notAB = 18229723555195321596ULL;
 static const U64 notGH = 4557430888798830399ULL;
+
+// LOOKUP
+
+static const int rook_relevent_bit[64] = {
+    12, 11, 11, 11, 11, 11, 11, 12, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    11, 10, 10, 10, 10, 10, 10, 11, 
+    12, 11, 11, 11, 11, 11, 11, 12
+};
+
+static const int bishop_relevent_bit[64] = {
+    6, 5, 5, 5, 5, 5, 5, 6, 
+    5, 5, 5, 5, 5, 5, 5, 5, 
+    5, 5, 7, 7, 7, 7, 5, 5, 
+    5, 5, 7, 9, 9, 7, 5, 5, 
+    5, 5, 7, 9, 9, 7, 5, 5, 
+    5, 5, 7, 7, 7, 7, 5, 5, 
+    5, 5, 5, 5, 5, 5, 5, 5, 
+    6, 5, 5, 5, 5, 5, 5, 6
+};
 
 
 #endif
