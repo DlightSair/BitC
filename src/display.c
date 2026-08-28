@@ -2,7 +2,7 @@
 #include "header.h"
 
 
-
+// Displays Bitboard (Unsigned Long Long in binary 1 for Occupied 0 For Not Occupied)
 void printBitBoard(U64 bitboard)
 {
     printf("\n");

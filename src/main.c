@@ -7,6 +7,5 @@ int main()
 {
     init_attack_lookup();
 
-
     return 0;
 }

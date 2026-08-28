@@ -1,10 +1,11 @@
 #include "utils.h"
 #include "header.h"
 
-U64 maskPawnAttacks(int side, int piece)
+// Returns Possible Pawn Attack Bitboard
+U64 maskPawnAttacks(int side, int square)
 {
     U64 attack = 0ULL;
-    U64 board = 1ULL << piece;
+    U64 board = 1ULL << square;
 
     switch (side)
     {
@@ -25,10 +26,11 @@ U64 maskPawnAttacks(int side, int piece)
     return attack;
 }
 
-U64 maskKnightAttacks(int piece)
+// Returns Possible Knight Attack Bitboard
+U64 maskKnightAttacks(int square)
 {
     U64 attack = 0ULL;
-    U64 board = 1ULL << piece;
+    U64 board = 1ULL << square;
 
     attack |= (board >> 2*BOARD_SIZE+1) & notH;
     attack |= (board >> 2*BOARD_SIZE-1) & notA;
@@ -47,10 +49,11 @@ U64 maskKnightAttacks(int piece)
 }
 
 
-U64 maskKingAttacks(int piece)
+// Returns Possible King Attack Bitboard
+U64 maskKingAttacks(int square)
 {
     U64 attack = 0ULL;
-    U64 board = 1ULL << piece;
+    U64 board = 1ULL << square;
 
     attack |= (board << BOARD_SIZE);
     attack |= (board >> BOARD_SIZE);
@@ -68,12 +71,13 @@ U64 maskKingAttacks(int piece)
 }
 
 
-U64 maskBishopAttacks(int piece)
+// Returns Possible Block Postion Bitboard for Bishop
+U64 maskBishopAttacks(int square)
 {
     U64 attack = 0ULL;
     
-    int curRank = piece / BOARD_SIZE;
-    int curFile = piece % BOARD_SIZE;
+    int curRank = square / BOARD_SIZE;
+    int curFile = square % BOARD_SIZE;
 
     int r, f;
 
@@ -94,12 +98,13 @@ U64 maskBishopAttacks(int piece)
 }
 
 
-U64 maskRookAttacks(int piece)
+// Returns Possible Block Postion Bitboard For Rook
+U64 maskRookAttacks(int square)
 {
     U64 attack = 0ULL;
     
-    int curRank = piece / BOARD_SIZE;
-    int curFile = piece % BOARD_SIZE;
+    int curRank = square / BOARD_SIZE;
+    int curFile = square % BOARD_SIZE;
 
     int r, f;
 
@@ -120,13 +125,13 @@ U64 maskRookAttacks(int piece)
 }
 
 
-
-U64 getBishopAttacks(int piece, U64 block)
+// Returns possible Bishop Attacks Bitboard based on Blocker Bitboard
+U64 getBishopAttacks(int square, U64 block)
 {
     U64 attack = 0ULL;
     
-    int curRank = piece / BOARD_SIZE;
-    int curFile = piece % BOARD_SIZE;
+    int curRank = square / BOARD_SIZE;
+    int curFile = square % BOARD_SIZE;
 
     int r, f;
 
@@ -158,12 +163,13 @@ U64 getBishopAttacks(int piece, U64 block)
 }
 
 
-U64 getRookAttacks(int piece, U64 block)
+// Returns possible Rook Attacks Bitboard based on Blocker Bitboard
+U64 getRookAttacks(int square, U64 block)
 {
     U64 attack = 0ULL;
     
-    int curRank = piece / BOARD_SIZE;
-    int curFile = piece % BOARD_SIZE;
+    int curRank = square / BOARD_SIZE;
+    int curFile = square % BOARD_SIZE;
 
     int r, f;
 

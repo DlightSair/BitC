@@ -14,6 +14,7 @@ add_executable(bitC
     src/init_attack.c
     src/occupancy.c
     src/randomNumber.c
+    src/magic_number.c
 )
 
 target_include_directories(bitC PRIVATE headers)

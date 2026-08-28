@@ -16,13 +16,13 @@ U32 get_random_U32()
     return number;
 }
 
-
+// Returns Random Unsigned Long Long (U64)
 U64 get_random_U64()
 {
     return (U64)get_random_U32() | ((U64)(get_random_U32()) << 32);
 }
 
-
+// Returns Candidate for Magic Number (U64)
 U64 get_magnic_number_candidate()
 {
     return get_random_U64() & get_random_U64() & get_random_U64();

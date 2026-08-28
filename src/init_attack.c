@@ -16,6 +16,7 @@ void init_reaper_moves(attackTables *attack)
 
 // INIT GLOBAL VARIBLE ATTACK LOOKUP 
 
+
 void init_attack_lookup()
 {
     attackTables attacks;
