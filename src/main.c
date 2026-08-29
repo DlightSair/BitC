@@ -1,5 +1,7 @@
-#include "utils.h"
-#include "header.h"
+#include "helper.h"
+#include "pieces.h"
+#include "init.h"
+#include "constants.h"
 
 
 // GLOBAL VARIBLE ATTACK LOOKUP 

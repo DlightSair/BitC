@@ -1,11 +1,12 @@
-#include "utils.h"
-#include "header.h"
+#include "helper.h"
+#include "pieces.h"
+
 
 
 // FOR FINDING CONSTANT VALUES AND CREATING LOOKUPS
 
 
-void printBoard()
+void printBoard(void)
 {
     char charFile[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
@@ -22,7 +23,7 @@ void printBoard()
 
 
 
-void displayNotFile()
+void displayNotFile(void)
 {
     char charFile[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
@@ -50,7 +51,7 @@ void displayNotFile()
 
 
 
-void displayTwoNotFile()
+void displayTwoNotFile(void)
 {
 
     U64 not_file = ~0ULL;

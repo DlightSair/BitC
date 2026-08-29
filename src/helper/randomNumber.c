@@ -1,10 +1,11 @@
-#include "utils.h"
-#include "header.h"
+#include "helper.h"
+#include "random.h"
+
 
 U32 current = 1804289383;
 
 
-U32 get_random_U32()
+U32 get_random_U32(void)
 {
     U32 number = current;
 
@@ -17,13 +18,13 @@ U32 get_random_U32()
 }
 
 // Returns Random Unsigned Long Long (U64)
-U64 get_random_U64()
+U64 get_random_U64(void)
 {
     return (U64)get_random_U32() | ((U64)(get_random_U32()) << 32);
 }
 
 // Returns Candidate for Magic Number (U64)
-U64 get_magnic_number_candidate()
+U64 get_magnic_number_candidate(void)
 {
     return get_random_U64() & get_random_U64() & get_random_U64();
 }

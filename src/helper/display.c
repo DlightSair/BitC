@@ -1,5 +1,5 @@
-#include "utils.h"
-#include "header.h"
+#include "helper.h"
+
 
 
 // Displays Bitboard (Unsigned Long Long in binary 1 for Occupied 0 For Not Occupied)

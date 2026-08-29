@@ -1,7 +1,8 @@
-#include "utils.h"
-#include "header.h"
+#include "helper.h"
+#include "pieces.h"
+#include "init.h"
 
-void init_reaper_moves()
+static void init_reaper_moves(void)
 {
     for(int piece=0; piece < SIZE; piece++)
     {
@@ -14,7 +15,7 @@ void init_reaper_moves()
 
 }
 
-void init_masks()
+static void init_masks(void)
 {
     for(int i=0; i < SIZE; i++)
     {
@@ -24,7 +25,7 @@ void init_masks()
 }
 
 
-void init_slider_move()
+static void init_slider_move(void)
 {
     for(int square=0; square < SIZE; square++)
     {
@@ -52,8 +53,7 @@ void init_slider_move()
 
 
 
-
-void init_attack_lookup()
+void init_attack_lookup(void)
 {
     init_masks();
     init_reaper_moves();

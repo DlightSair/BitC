@@ -1,5 +1,5 @@
-#include "header.h"
-#include "utils.h"
+#include "helper.h"
+
 
 // Returns (index)th configuration of block among all possible configurations 
 U64 set_occupancy(int index, U64 attack_board)

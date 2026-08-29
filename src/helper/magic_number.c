@@ -1,11 +1,13 @@
-#include "header.h"
-#include "utils.h"
+#include "helper.h"
+#include "pieces.h"
+#include "random.h"
+#include "init.h"
 
 #include <string.h>
 
 
 // For Rook and Bishop
-U64 get_magic_number(int square, int piece)  
+static U64 get_magic_number(int square, int piece)
 {
     int relevent_bits = (piece == ROOK) ? rook_relevent_bit[square] : bishop_relevent_bit[square];
     int occupancy_size = 1 << relevent_bits;
@@ -60,7 +62,7 @@ U64 get_magic_number(int square, int piece)
 
 
 // Generating Magic Numbers for Rook and Bishop
-void init_magicNumbers()
+void init_magicNumbers(void)
 {
     printf("\nROOK:\n");
     for(int i=0; i < SIZE; i++){
@@ -77,10 +79,3 @@ void init_magicNumbers()
     }
 }
 
-
-void test_magic_numbers(int square, U64 block, int piece)
-{
-    block &= (piece == ROOK) ? maskRookAttacks(square) : maskBishopAttacks(square);
-
-    int magic_index = (int) (block * rook_magicNumbers[square]);
-}
