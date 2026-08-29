@@ -126,7 +126,7 @@ U64 maskRookAttacks(int square)
 
 
 // Returns possible Bishop Attacks Bitboard based on Blocker Bitboard
-U64 getBishopAttacks(int square, U64 block)
+U64 calculateBishopAttacks(int square, U64 block)
 {
     U64 attack = 0ULL;
     
@@ -164,7 +164,7 @@ U64 getBishopAttacks(int square, U64 block)
 
 
 // Returns possible Rook Attacks Bitboard based on Blocker Bitboard
-U64 getRookAttacks(int square, U64 block)
+U64 calculateRookAttacks(int square, U64 block)
 {
     U64 attack = 0ULL;
     
@@ -200,3 +200,19 @@ U64 getRookAttacks(int square, U64 block)
     return attack;
 }
 
+
+U64 getBishopAttacks(int square, U64 block)
+{
+    block &= maskAttacks.bishop[square];
+    int magicIndex = (int) ( (bishop_magicNumbers[square] * block) >> (SIZE - bishop_relevent_bit[square]));
+
+    return attackLookup.bishop[square][magicIndex];
+}
+
+U64 getRookAttacks(int square, U64 block)
+{
+    block &= maskAttacks.rook[square];
+    int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (SIZE - rook_relevent_bit[square]));
+
+    return attackLookup.rook[square][magicIndex];
+}

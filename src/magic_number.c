@@ -19,7 +19,7 @@ U64 get_magic_number(int square, int piece)
     for(int i=0; i < occupancy_size; i++)
     {
         occupancies[i] = set_occupancy(i, attack_mask);
-        attacks[i] = (piece == ROOK) ? getRookAttacks(square, occupancies[i]) : getBishopAttacks(square, occupancies[i]);
+        attacks[i] = (piece == ROOK) ? calculateRookAttacks(square, occupancies[i]) : calculateBishopAttacks(square, occupancies[i]);
     }
 
 
@@ -40,9 +40,9 @@ U64 get_magic_number(int square, int piece)
         {
             int magic_index = (int) ((magicNumber * occupancies[i]) >> (SIZE - relevent_bits));
 
-            if( used_attacks[i] == 0ULL){
-                used_attacks[i] = attacks[i];   
-            } else if( used_attacks[i] != attacks[i] ){
+            if( used_attacks[magic_index] == 0ULL){
+                used_attacks[magic_index] = attacks[i];
+            } else if( used_attacks[magic_index] != attacks[i] ){
                 fail = 1;
             }
 
@@ -75,4 +75,12 @@ void init_magicNumbers()
         printf("0x%016" PRIx64 "ULL,\n", magicNumber);
 
     }
+}
+
+
+void test_magic_numbers(int square, U64 block, int piece)
+{
+    block &= (piece == ROOK) ? maskRookAttacks(square) : maskBishopAttacks(square);
+
+    int magic_index = (int) (block * rook_magicNumbers[square]);
 }

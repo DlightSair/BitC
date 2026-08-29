@@ -27,8 +27,11 @@ U64 maskRookAttacks(int square);
 
 
 
-U64 getRookAttacks(int square, U64 block);
+U64 calculateRookAttacks(int square, U64 block);
+U64 calculateBishopAttacks(int square, U64 block);
+
 U64 getBishopAttacks(int square, U64 block);
+U64 getRookAttacks(int square, U64 block);
 
 
 // OCCUPANCY
@@ -38,7 +41,6 @@ U64 set_occupancy(int index, U64 attack_board);
 
 
 // INIT ATTACK TABLE
-void init_reaper_moves(attackTables *attack);
 void init_attack_lookup();
 
 
