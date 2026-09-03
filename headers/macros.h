@@ -8,9 +8,14 @@
 
 // Operations MACROS
 
-#define get(bitboard, square) (bitboard & (1ULL << square)) ? 1: 0       // Get bit on (square) position in bitboard
-#define add(bitboard, square) (bitboard |= (1ULL << square))             // Change bit on (square) position to 1
-#define remove(bitboard, square) (bitboard &= ~(1ULL << square))         // Change bit on (square) position to 0
+// Get bit on (square) position in bitboard
+#define get(bitboard, square) ((bitboard) & (1ULL << (square))) ? 1: 0    
+
+// Change bit on (square) position to 1
+#define set(bitboard, square) ((bitboard) |= (1ULL << (square)))             
+
+// Change bit on (square) position to 0
+#define remove(bitboard, square) ((bitboard) &= ~(1ULL << (square)))        
 
 
 

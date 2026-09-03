@@ -12,7 +12,7 @@ U64 set_occupancy(int index, U64 attack_board)
         remove(attack_board, LSB_1);
 
         if( index & (1ULL << i)){
-            add(occupancy, LSB_1);
+            set(occupancy, LSB_1);
         }
     }
 

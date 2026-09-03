@@ -6,7 +6,7 @@
 // FOR FINDING CONSTANT VALUES AND CREATING LOOKUPS
 
 
-void printBoard(void)
+void printBoardIndex(void)
 {
     char charFile[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 

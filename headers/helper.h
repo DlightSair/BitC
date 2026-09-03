@@ -9,7 +9,8 @@
 
 // HELPER
 
-void printBoard(void);          // a1-h8 coordinate grid, used for calcuating constants
+void printBoard(U64 bitboard[]);
+void printBoardIndex(void);          // a1-h8 coordinate grid, used for calcuating constants
 void displayNotFile(void);      // prints notA..notH, used for calcuating constants
 void displayTwoNotFile(void);   // prints notGH, used for calcuating constants
 void print_relevent_occupancy(int piece);   // used for calcuating constants

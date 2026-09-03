@@ -10,6 +10,24 @@ extern attackTables attackLookup;
 extern attackMasks maskAttacks;
 
 
+static const char asciiPiece[] = "PNBRQKpnbrqk";
+
+static const int asciiToPieces[] = {
+    ['P'] = P,
+    ['N'] = N,
+    ['B'] = B,
+    ['R'] = R,
+    ['Q'] = Q,
+    ['K'] = K,
+    ['p'] = p,
+    ['n'] = n,
+    ['b'] = b,
+    ['r'] = r,
+    ['q'] = q,
+    ['k'] = k
+};
+
+
 // edge-wrap masks for shifts
 static const U64 notA = 18374403900871474942ULL;
 static const U64 notB = 18302063728033398269ULL;
@@ -49,6 +67,23 @@ static const int bishop_relevent_bit[64] = {
     5, 5, 5, 5, 5, 5, 5, 5, 
     6, 5, 5, 5, 5, 5, 5, 6
 };
+
+// Iniitial Board
+static U64 initialBoard[12] = {
+    71776119061217280ULL,
+    66ULL,
+    36ULL,
+    9295429630892703744ULL,
+    8ULL,
+    16ULL,
+    65280ULL,
+    4755801206503243776ULL,
+    2594073385365405696ULL,
+    129ULL,
+    576460752303423488ULL,
+    1152921504606846976ULL
+};
+
 
 
 // MAGIC NUMBER
