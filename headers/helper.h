@@ -17,8 +17,10 @@ void print_relevent_occupancy(int piece);   // used for calcuating constants
 
 U64 set_occupancy(int index, U64 attack_board);   // index-th blocker arrangement, for table generation
 
+// DISPLAY
 void printBitBoard(U64 bitboard);
 void printBoard(gameState state);
+void printAttackedBoard(gameState state);
 
 
 // Parse FEN

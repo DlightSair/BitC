@@ -17,5 +17,6 @@ U64 calculateBishopAttacks(int square, U64 block);   // brute force for getting 
 U64 getRookAttacks(int square, U64 block);     // magic lookup for getting Rook Attack
 U64 getBishopAttacks(int square, U64 block);   // magic lookup for getting Bishop Attack
 
+U64 getQueenAttacks(int square, U64 block);
 
 #endif

@@ -36,7 +36,6 @@ void parseFEN(gameState *state, char *fen)
     state->side = (fen[index] == 'w') ? WHITE : BLACK;
 
     index+=2; 
-    printf("Index: %d\n", index);
     while(fen[index] != ' ') {
         switch(fen[index]) {
             case 'K': state->castle |= WK; break;
@@ -48,7 +47,6 @@ void parseFEN(gameState *state, char *fen)
         index++;
     }
     
-    printf("Castle: %d\n", state->castle);
 
     index++;
     if(fen[index] == '-'){
