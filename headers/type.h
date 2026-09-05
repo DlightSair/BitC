@@ -14,9 +14,12 @@ typedef uint32_t U32;
 typedef struct 
 {
     U64 board[12];
+    U64 occupancy[3];
     int side;
     int castle;
     int enpassant;
+    int half;
+    int full;
 } gameState;
 
 

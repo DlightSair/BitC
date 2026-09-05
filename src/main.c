@@ -27,13 +27,16 @@ int main()
             0x0000000000000008ULL,
             0x0000000000000010ULL
         },
-        .castle = WK+WQ+BK+BK,
+        .castle = WK | WQ | BK | BK,
         .enpassant = NO_SQUARE,
         .side = WHITE
     };
  
 
-    printBoard(state.board);
+    char fen[] = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR b KQkq c6 0 2";
     
+    parseFEN(&state, fen);
+    printBoard(state);
+
     return 0;
 }
