@@ -22,3 +22,11 @@ U64 maskKingAttacks(int square)
 
     return attack;
 }
+
+
+
+
+void generateKingMoves()
+{
+
+}

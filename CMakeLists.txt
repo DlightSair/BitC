@@ -13,6 +13,7 @@ add_executable(bitC
     src/init_attack.c
     src/occupancy.c
     src/attack.c
+    src/moves.c
 
     ${PIECES_SOURCES}
     ${HELPER_SOURCES}

@@ -27,4 +27,8 @@ void printAttackedBoard(gameState state);
 void parseFEN(gameState *state, char *fen);
 
 
+// Moves
+void generateMoves(gameState state);
+
+
 #endif

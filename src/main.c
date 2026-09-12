@@ -17,9 +17,12 @@ int main()
     char *startingPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     parseFEN(&state, startingPostionFEN);
 
+    char *test = "r1bqk2r/pppp1ppp/2n2n2/8/1b2P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 5";
+    parseFEN(&state, test);
  
     printBoard(state);
-    printAttackedBoard(state);
+
+    generateMoves(state);
 
     return 0;
 }
