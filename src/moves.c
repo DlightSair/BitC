@@ -30,5 +30,6 @@ void generateMoves(gameState state)
         break;
     }
 
+    generateKingMoves(&state);
 
 }

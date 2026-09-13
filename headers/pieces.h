@@ -10,6 +10,7 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side);
 U64 maskKnightAttacks(int square);
 
 U64 maskKingAttacks(int square);
+void generateKingMoves(const gameState *state);
 
 
 U64 maskBishopAttacks(int square);   // relevant-occupancy mask, edges excluded

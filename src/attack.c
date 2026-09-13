@@ -3,26 +3,26 @@
 #include "type.h"
 
 
-int isSquareAttacked(U64 board[], U64 occupancy[], int square, int side)
+int isSquareAttacked(const gameState *s, int square, int side)
 {
     return 
-        (side == WHITE) && (attackLookup.pawn[BLACK][square] & board[P]) ||
+        (side == WHITE) && (attackLookup.pawn[BLACK][square] & s->board[P]) ||
 
-        (side == BLACK) && (attackLookup.pawn[WHITE][square] & board[p]) ||
+        (side == BLACK) && (attackLookup.pawn[WHITE][square] & s->board[p]) ||
 
-        attackLookup.knight[square] & ((side == WHITE) ? board[N] : board[n]) ||
+        attackLookup.knight[square] & ((side == WHITE) ? s->board[N] : s->board[n]) ||
 
-        attackLookup.king[square] & ((side == WHITE) ? board[K] : board[k]) ||
+        attackLookup.king[square] & ((side == WHITE) ? s->board[K] : s->board[k]) ||
 
-        getBishopAttacks(square, occupancy[BOTH]) & ((side == WHITE) ? board[B] : board[b]) ||
+        getBishopAttacks(square, s->occupancy[BOTH]) & ((side == WHITE) ? s->board[B] : s->board[b]) ||
 
-        getRookAttacks(square, occupancy[BOTH]) & ((side == WHITE) ? board[R] : board[r]) ||
+        getRookAttacks(square, s->occupancy[BOTH]) & ((side == WHITE) ? s->board[R] : s->board[r]) ||
 
-        getQueenAttacks(square, occupancy[BOTH]) & ((side == WHITE) ? board[Q] : board[q]);
+        getQueenAttacks(square, s->occupancy[BOTH]) & ((side == WHITE) ? s->board[Q] : s->board[q]);
 }
 
 
-void printAttackedBoard(gameState state)
+void printAttackedBoard(const gameState *state)
 {
     U64 attack = 0ULL;
 
@@ -32,11 +32,11 @@ void printAttackedBoard(gameState state)
         {
             int square = r*BOARD_SIZE + f;
             
-            if( isSquareAttacked(state.board, state.occupancy, square, state.side) )
+            if( isSquareAttacked(state, square, !state->side) )
                 set(attack, square);
 
         }
     }
 
-    printBitBoard(attack & ~state.occupancy[state.side]);
+    printBitBoard(attack & ~state->occupancy[state->side]);
 }
