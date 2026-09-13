@@ -36,7 +36,7 @@ static U64 shiftBitbaord(U64 board, int n)
 }
 
 
-void generatePawnMoves(U64 pawnBoard, U64 occupancy, int enpassant, int side)
+void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side)
 {
 
 //    U64 singlePush = shiftBitbaord(pawnBoard, 8 - 16*side) 
@@ -46,7 +46,7 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy, int enpassant, int side)
 //        & (~occupancy) 
 //        & (0x00000000FF000000ULL << (8 * side));
 
-    U64 empty = ~occupancy;
+    U64 empty = ~occupancy[BOTH];
     U64 rank_w2_b7 = (side == WHITE) ? 0x00FF000000000000ULL : 0x000000000000FF00ULL;
     U64 rank_w8_b1 = (side == WHITE) ? 0x00000000000000FFULL : 0xFF00000000000000ULL;
     int shift_offset = (side == WHITE) ? -8 : 8;
@@ -58,13 +58,13 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy, int enpassant, int side)
         int secondPushSquare = firstPushSquare + shift_offset; 
 
         
-        int isSinglePushValid = (get(empty, firstPushSquare));
+        int isSinglePushValid = get(empty, firstPushSquare);
         int isDoublePushValid = isSinglePushValid 
-                            && (get(empty, secondPushSquare)) 
-                            && ((1ULL << pieceSquare) & rank_w2_b7);
+                            && get(empty, secondPushSquare)
+                            && get(rank_w2_b7, pieceSquare);
 
         // Pawn Promotion
-        if( isSinglePushValid && ((1ULL << firstPushSquare) & rank_w8_b1) ) {
+        if( isSinglePushValid && get(rank_w8_b1, firstPushSquare) ) {
             printf("Promotion %s: %s\n", squareToString[pieceSquare], squareToString[firstPushSquare]);
         } 
         // Just Push 
@@ -77,13 +77,28 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy, int enpassant, int side)
             printf("DoublePush %s: %s\n", squareToString[pieceSquare], squareToString[secondPushSquare]);
         }
 
-        if( enpassant != NO_SQUARE && (attackLookup.pawn[side][enpassant] & (1ULL << pieceSquare)) ) {
-            printf("EnPassant %s: %s\n", squareToString[pieceSquare], squareToString[firstPushSquare]);
+        if( enpassant != NO_SQUARE && get(attackLookup.pawn[side][pieceSquare], enpassant) ) {
+            printf("EnPassant %s: %s\n", squareToString[pieceSquare], squareToString[enpassant]);
         }
         
+        // Pawn Attacks
+        U64 attack = attackLookup.pawn[side][pieceSquare] & occupancy[!side];
+        
+        while( attack ){
+            int attack_lsb = get_LSB_index(attack);
+
+            // Prootion
+            if( get(rank_w8_b1, attack_lsb) ){
+                printf("Pawn Promotion/Capture %s: %s\n", squareToString[pieceSquare], squareToString[attack_lsb]);
+            }
+            else {
+                printf("Pawn Capture %s: %s\n", squareToString[pieceSquare], squareToString[attack_lsb]);
+            }
+
+            remove(attack, attack_lsb);            
+        }
+
         remove(pawnBoard, pieceSquare);
     }
 
-
-    
 }

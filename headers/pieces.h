@@ -4,7 +4,7 @@
 #include "type.h"
 
 U64 maskPawnAttacks(int side, int square);  
-void generatePawnMoves(U64 pawnBoard, U64 occupancy, int enpassant, int side);
+void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side);
 
 
 U64 maskKnightAttacks(int square);

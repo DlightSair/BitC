@@ -19,13 +19,13 @@ void generateMoves(gameState state)
     switch (state.side)
     {
     case WHITE:
-        generatePawnMoves(state.board[P], state.occupancy[BOTH], state.enpassant, state.side);
+        generatePawnMoves(state.board[P], state.occupancy, state.enpassant, state.side);
 
         break;
 
     
     case BLACK:
-        generatePawnMoves(state.board[p], state.occupancy[BOTH], state.enpassant, state.side);
+        generatePawnMoves(state.board[p], state.occupancy, state.enpassant, state.side);
 
         break;
     }
