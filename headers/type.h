@@ -46,6 +46,13 @@ typedef struct
 } attackMasks;
 
 
+typedef struct
+{
+    int move[256];
+    int count;
+} moveList;
+
+
 
 
 // ENUMS

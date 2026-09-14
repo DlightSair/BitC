@@ -5,6 +5,11 @@
 #include "constants.h"
 
 
+void addMove(moveList *move, int newMove)
+{
+    move->move[move->count++] = newMove; 
+}
+
 static U64 getAttackLookup(int piece, U64 block, int square)
 {
     if( piece == N || piece == n){

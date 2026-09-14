@@ -21,6 +21,7 @@ U64 set_occupancy(int index, U64 attack_board);   // index-th blocker arrangemen
 void printBitBoard(U64 bitboard);
 void printBoard(gameState state);
 void printAttackedBoard(const gameState *state);
+void displayMove(const moveList *move);
 
 
 // Parse FEN
@@ -29,6 +30,8 @@ void parseFEN(gameState *state, char *fen);
 
 // Moves
 void generateMoves(const gameState *state);
+void addMove(moveList *move, int newMove);
+
 
 // Attack
 int isSquareAttacked(const gameState *s, int square, int side);

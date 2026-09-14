@@ -89,3 +89,25 @@ void printBitBoard(U64 bitboard)
     printf("\n  BitBoard: %llu\n\n", bitboard);
 
 }
+
+
+void displayMove(const moveList *move)
+{
+    printf("\n   | S  | T  | P | Prom | Cap | D  | En | Cas |\n");
+    printf("   --------------------------------------------\n");
+
+    for(int i=0; i<move->count; i++)
+    {
+        printf("   | %s | %s | %c |  %c   |  %d  | %d  | %d  | %d   |\n",
+            squareToString[getSource(move->move[i])],
+            squareToString[getTarget(move->move[i])],
+            asciiPiece[getPiece(move->move[i])],
+            (getProm(move->move[i]) ? asciiPiece[getProm(move->move[i])] : '-'),
+            getCapture(move->move[i]),
+            getDouble(move->move[i]),
+            getEnpassant(move->move[i]),
+            getCastle(move->move[i])
+        );
+    }
+    printf("\n");
+}
