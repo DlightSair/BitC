@@ -21,12 +21,12 @@ int main()
     char *startingPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     parseFEN(&state, startingPostionFEN);
 
-    char *test = "r3k2r/ppppQppp/2n2n2/8/1B2P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 5";
+    char *test = "r3k2r/pppp1ppp/2n2n2/4P3/1B6/2N2N2/PPPP1PpP/R1BQK2R b KQkq - 4 5";
     parseFEN(&state, test);
 
-    addMove(&move, encodeMove(e1, e2, P, 0, 0, 0, 1, 0));
-    addMove(&move, encodeMove(e1, d5, q, 0, 0, 0, 0, 1));
-    addMove(&move, encodeMove(d1, e2, K, 0, 1, 1, 1, 0));
+    printBoard(state);
+    generateMoves(&state, &move);
+
     displayMove(&move);
  
     return 0;

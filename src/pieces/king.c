@@ -26,10 +26,11 @@ U64 maskKingAttacks(int square)
 
  
 
-void generateKingMoves(const gameState *state)
+void generateKingMoves(const gameState *state, moveList *move)
 {
     U64 empty = ~state->occupancy[BOTH];
     U64 kingBoard = (state->side == WHITE) ? state->board[K] : state->board[k];
+    int piece = (state->side == WHITE) ? K : k;
     int ksCastleColor = (state->side == WHITE) ? WK : BK;
     int qsCastleColor = (state->side == WHITE) ? WQ : BQ;
     int kOffset = (state->side == WHITE) ? 0 : -7*8;
@@ -41,9 +42,7 @@ void generateKingMoves(const gameState *state)
         {
             if(get(empty, f1 + kOffset) && get(empty, g1 + kOffset))
             {
-                printf("Castle %s: %s\n", 
-                    squareToString[e1 + kOffset], 
-                    squareToString[g1 + kOffset]);
+                addMove(move, encodeMove(e1+kOffset, g1+kOffset, piece, 0, 0, 0, 0, 1));
             }
         }
     }
@@ -56,9 +55,7 @@ void generateKingMoves(const gameState *state)
             
             if(get(empty, b1 + kOffset) && get(empty, c1 + kOffset) && get(empty, d1 + kOffset))
             {
-                printf("Castle %s: %s\n", 
-                    squareToString[e1 + kOffset], 
-                    squareToString[b1 + kOffset]);
+                addMove(move, encodeMove(e1+kOffset, b1+kOffset, piece, 0, 0, 0, 0, 1));
             }
         }
     }
@@ -76,11 +73,11 @@ void generateKingMoves(const gameState *state)
 
             if(get(state->occupancy[!state->side], attack_lsb))
             {
-                printf("King Capture %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
+                addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 1, 0, 0, 0));
             } 
             else if(get(empty, attack_lsb))
             {
-                printf("King %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
+                addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 0, 0, 0, 0));
             }
 
             remove(kingAttack, attack_lsb);

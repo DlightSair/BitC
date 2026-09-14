@@ -29,7 +29,7 @@ void parseFEN(gameState *state, char *fen);
 
 
 // Moves
-void generateMoves(const gameState *state);
+void generateMoves(const gameState *state, moveList *move);
 void addMove(moveList *move, int newMove);
 
 

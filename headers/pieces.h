@@ -4,13 +4,13 @@
 #include "type.h"
 
 U64 maskPawnAttacks(int side, int square);  
-void generatePawnMoves(const gameState *state);
+void generatePawnMoves(const gameState *state, moveList *move);
 
 
 U64 maskKnightAttacks(int square);
 
 U64 maskKingAttacks(int square);
-void generateKingMoves(const gameState *state);
+void generateKingMoves(const gameState *state, moveList *move);
 
 
 U64 maskBishopAttacks(int square);   // relevant-occupancy mask, edges excluded

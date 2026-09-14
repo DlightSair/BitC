@@ -28,10 +28,10 @@ static U64 getAttackLookup(int piece, U64 block, int square)
 
 
 // Pseudo-Legal moves ---- checkLegalMove will be made later
-void generateMoves(const gameState *state)
+void generateMoves(const gameState *state, moveList *move)
 {
-    generatePawnMoves(state);
-    generateKingMoves(state);
+    generatePawnMoves(state, move);
+    generateKingMoves(state, move);
     
 
     int piece = (state->side == WHITE) ? N : n;
@@ -53,11 +53,11 @@ void generateMoves(const gameState *state)
 
                 if(get(state->occupancy[!state->side], attack_lsb))
                 {
-                    printf("%c Capture - %s:%s\n", asciiPiece[piece], squareToString[lsb], squareToString[attack_lsb]);
+                    addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 1, 0, 0, 0));
                 } 
                 else if(get(~state->occupancy[BOTH], attack_lsb))
                 {
-                    printf("%c Move - %s:%s\n", asciiPiece[piece], squareToString[lsb], squareToString[attack_lsb]);
+                    addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 0, 0, 0, 0));
                 }
 
                 remove(attack, attack_lsb);

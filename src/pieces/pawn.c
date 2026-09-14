@@ -36,7 +36,7 @@ static U64 shiftBitbaord(U64 board, int n)
 }
 
 
-void generatePawnMoves(const gameState *state)
+void generatePawnMoves(const gameState *state, moveList *move)
 {
 
 //    U64 singlePush = shiftBitbaord(pawnBoard, 8 - 16*side) 
@@ -46,7 +46,8 @@ void generatePawnMoves(const gameState *state)
 //        & (~occupancy) 
 //        & (0x00000000FF000000ULL << (8 * side));
     int side = state->side;
-    U64 pawnBoard = state->board[(side == WHITE) ? P : p];
+    int piece = (side == WHITE) ? P : p;
+    U64 pawnBoard = state->board[piece];
     int enpassant = state->enpassant;
 
     U64 empty = ~state->occupancy[BOTH];
@@ -68,20 +69,23 @@ void generatePawnMoves(const gameState *state)
 
         // Pawn Promotion
         if( isSinglePushValid && get(rank_w8_b1, firstPushSquare) ) {
-            printf("Promotion %s: %s\n", squareToString[pieceSquare], squareToString[firstPushSquare]);
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, q, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, r, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, b, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, n, 0, 0, 0, 0));
         } 
         // Just Push 
         else if( isSinglePushValid ) {
-            printf("SinglePush %s: %s\n", squareToString[pieceSquare], squareToString[firstPushSquare]);
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, 0, 0, 0, 0, 0));
         }
 
         // Double Push
         if( isDoublePushValid ) {
-            printf("DoublePush %s: %s\n", squareToString[pieceSquare], squareToString[secondPushSquare]);
+            addMove(move, encodeMove(pieceSquare, secondPushSquare, piece, 0, 0, 1, 0, 0));
         }
 
         if( enpassant != NO_SQUARE && get(attackLookup.pawn[side][pieceSquare], enpassant) ) {
-            printf("EnPassant %s: %s\n", squareToString[pieceSquare], squareToString[enpassant]);
+            addMove(move, encodeMove(pieceSquare, enpassant, piece, 0, 0, 0, 1, 0));
         }
         
         // Pawn Attacks
@@ -90,12 +94,15 @@ void generatePawnMoves(const gameState *state)
         while( attack ){
             int attack_lsb = get_LSB_index(attack);
 
-            // Prootion
+            // Promotion
             if( get(rank_w8_b1, attack_lsb) ){
-                printf("Pawn Promotion/Capture %s: %s\n", squareToString[pieceSquare], squareToString[attack_lsb]);
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, q, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, r, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, b, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, n, 1, 0, 0, 0));
             }
             else {
-                printf("Pawn Capture %s: %s\n", squareToString[pieceSquare], squareToString[attack_lsb]);
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, 0, 1, 0, 0, 0));
             }
 
             remove(attack, attack_lsb);            
