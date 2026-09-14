@@ -34,6 +34,7 @@ void generateKingMoves(const gameState *state)
     int qsCastleColor = (state->side == WHITE) ? WQ : BQ;
     int kOffset = (state->side == WHITE) ? 0 : -7*8;
 
+    
     if( state->castle & ksCastleColor){
         if(!isSquareAttacked(state, f1 + kOffset, !state->side) 
             && !isSquareAttacked(state, g1 + kOffset, !state->side))
@@ -52,6 +53,7 @@ void generateKingMoves(const gameState *state)
             && !isSquareAttacked(state, c1 + kOffset, !state->side) 
             && !isSquareAttacked(state, d1 + kOffset, !state->side))
         {
+            
             if(get(empty, b1 + kOffset) && get(empty, c1 + kOffset) && get(empty, d1 + kOffset))
             {
                 printf("Castle %s: %s\n", 
@@ -60,6 +62,7 @@ void generateKingMoves(const gameState *state)
             }
         }
     }
+
     
     // only one king but still eh 
     while(kingBoard)

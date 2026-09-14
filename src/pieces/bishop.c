@@ -75,3 +75,4 @@ U64 getBishopAttacks(int square, U64 block)
 
     return attackLookup.bishop[square][magicIndex];
 }
+

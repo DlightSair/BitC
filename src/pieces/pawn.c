@@ -36,7 +36,7 @@ static U64 shiftBitbaord(U64 board, int n)
 }
 
 
-void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side)
+void generatePawnMoves(const gameState *state)
 {
 
 //    U64 singlePush = shiftBitbaord(pawnBoard, 8 - 16*side) 
@@ -45,8 +45,11 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side)
 //    U64 doublePush = shiftBitbaord(singlePush, 8 - 16*side) 
 //        & (~occupancy) 
 //        & (0x00000000FF000000ULL << (8 * side));
+    int side = state->side;
+    U64 pawnBoard = state->board[(side == WHITE) ? P : p];
+    int enpassant = state->enpassant;
 
-    U64 empty = ~occupancy[BOTH];
+    U64 empty = ~state->occupancy[BOTH];
     U64 rank_w2_b7 = (side == WHITE) ? 0x00FF000000000000ULL : 0x000000000000FF00ULL;
     U64 rank_w8_b1 = (side == WHITE) ? 0x00000000000000FFULL : 0xFF00000000000000ULL;
     int shift_offset = (side == WHITE) ? -8 : 8;
@@ -82,7 +85,7 @@ void generatePawnMoves(U64 pawnBoard, U64 occupancy[], int enpassant, int side)
         }
         
         // Pawn Attacks
-        U64 attack = attackLookup.pawn[side][pieceSquare] & occupancy[!side];
+        U64 attack = attackLookup.pawn[side][pieceSquare] & state->occupancy[!side];
         
         while( attack ){
             int attack_lsb = get_LSB_index(attack);

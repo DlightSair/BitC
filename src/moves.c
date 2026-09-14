@@ -5,31 +5,61 @@
 #include "constants.h"
 
 
+static U64 getAttackLookup(int piece, U64 block, int square)
+{
+    if( piece == N || piece == n){
+        return attackLookup.knight[square];
+    }
+    else if( piece == R || piece == r){
+        return getRookAttacks(square, block);
+    }
+    else if( piece == B || piece == b){
+        return getBishopAttacks(square, block);
+    }
+    else if( piece == Q || piece == q){
+        return getQueenAttacks(square, block);
+    }
+}
 
 
 // Pseudo-Legal moves ---- checkLegalMove will be made later
-void generateMoves(gameState state)
+void generateMoves(const gameState *state)
 {
-    int sourceSquare;
-    int targetSquare;
-
-    U64 bitboard;
-    U64 attacks;
-
-    switch (state.side)
-    {
-    case WHITE:
-        generatePawnMoves(state.board[P], state.occupancy, state.enpassant, state.side);
-
-        break;
-
+    generatePawnMoves(state);
+    generateKingMoves(state);
     
-    case BLACK:
-        generatePawnMoves(state.board[p], state.occupancy, state.enpassant, state.side);
 
-        break;
+    int piece = (state->side == WHITE) ? N : n;
+    int end = (state->side == WHITE) ? Q : q;
+
+    for(; piece <= end; piece++)
+    {
+        U64 board = state->board[piece];
+
+        while(board)
+        {
+            
+            int lsb = get_LSB_index(board);
+
+            U64 attack = getAttackLookup(piece, state->occupancy[BOTH], lsb);
+
+            while(attack){
+                int attack_lsb = get_LSB_index(attack);
+
+                if(get(state->occupancy[!state->side], attack_lsb))
+                {
+                    printf("%c Capture - %s:%s\n", asciiPiece[piece], squareToString[lsb], squareToString[attack_lsb]);
+                } 
+                else if(get(~state->occupancy[BOTH], attack_lsb))
+                {
+                    printf("%c Move - %s:%s\n", asciiPiece[piece], squareToString[lsb], squareToString[attack_lsb]);
+                }
+
+                remove(attack, attack_lsb);
+            }
+
+            remove(board, lsb);
+        }
     }
-
-    generateKingMoves(&state);
 
 }

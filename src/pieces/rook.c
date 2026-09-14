@@ -31,6 +31,8 @@ U64 maskRookAttacks(int square)
 
 
 
+
+
 // Returns possible Rook Attacks Bitboard based on Blocker Bitboard
 U64 calculateRookAttacks(int square, U64 block)
 {
@@ -76,4 +78,32 @@ U64 getRookAttacks(int square, U64 block)
     int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (SIZE - rook_relevent_bit[square]));
 
     return attackLookup.rook[square][magicIndex];
+}
+
+
+void generateRookAttacks(U64 RookBoard, U64 occupancy[], int side)
+{
+    while(RookBoard)
+    {
+        int lsb = get_LSB_index(RookBoard);
+
+        U64 RookAttack = attackLookup.knight[lsb];
+
+        while(RookAttack){
+            int attack_lsb = get_LSB_index(RookAttack);
+
+            if(get(occupancy[!side], attack_lsb))
+            {
+                printf("Knight Capture %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
+            } 
+            else if(get(~occupancy[BOTH], attack_lsb))
+            {
+                printf("Knight %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
+            }
+
+            remove(RookAttack, attack_lsb);
+        }
+
+        remove(RookBoard, lsb);
+    }
 }

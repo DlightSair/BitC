@@ -23,3 +23,4 @@ U64 maskKnightAttacks(int square)
 
     return attack;
 }
+
