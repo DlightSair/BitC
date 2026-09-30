@@ -31,7 +31,7 @@ void parseFEN(gameState *state, char *fen);
 // Moves
 void generateMoves(const gameState *state, moveList *move);
 void addMove(moveList *move, int newMove);
-
+int makeMove(gameState *state, int move);
 
 // Attack
 int isSquareAttacked(const gameState *s, int square, int side);

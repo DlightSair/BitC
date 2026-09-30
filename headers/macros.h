@@ -39,6 +39,18 @@
 #define FLAG_MASK         0x01
 
 
+// 0000 0000 0000 0000 0000 0000 
+// 0000 0000 0000 0000 0011 1111 - source
+// 0000 0000 0000 1111 1100 0000 - target
+// 0000 0000 1111 0000 0000 0000 - piece
+// 0000 1111 0000 0000 0000 0000 - promotion
+// 0001 0000 0000 0000 0000 0000 - capture
+// 0010 0000 0000 0000 0000 0000 - double push
+// 0100 0000 0000 0000 0000 0000 - enpassnt
+// 1000 0000 0000 0000 0000 0000 - castle
+
+
+
 #define encodeMove(source, target, piece, promotion, capture, doublePawnPush, Enpassant, castle) \
     ((source) << SOURCE_SHIFT) |             \
     ((target) << TARGET_SHIFT) |             \

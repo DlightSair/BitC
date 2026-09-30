@@ -3,6 +3,7 @@
 #include "pieces.h"
 #include "macros.h"
 #include "constants.h"
+#include <string.h>
 
 
 void addMove(moveList *move, int newMove)
@@ -24,6 +25,140 @@ static U64 getAttackLookup(int piece, U64 block, int square)
     else if( piece == Q || piece == q){
         return getQueenAttacks(square, block);
     }
+}
+
+
+int makeMove(gameState *state, int move)
+{
+    gameState temp = *state;
+
+    int target = getTarget(move);
+    int source = getSource(move);
+
+    remove(state->board[getPiece(move)], source);
+    set(state->board[getPiece(move)], target);
+
+    if(getCapture(move)){
+        // Remove from opposite board
+        int start_piece = (state->side == WHITE) ? p : P; 
+        int end_piece = (state->side == WHITE) ? k : K;
+
+        for(int piece = start_piece; piece <= end_piece; piece++)
+        {
+            if(get(state->board[piece], target)){
+                remove(state->board[piece], target);
+                break;
+            }
+        }
+    }
+
+
+    if(getProm(move)){
+        remove(state->board[getPiece(move)], target);
+        set(state->board[ getProm(move) ], target);
+    }
+
+
+    if(getEnpassant(move)){
+        (state->side == WHITE) ? remove(state->board[ p ], target + 8) :
+                                 remove(state->board[ P ], target - 8) ;
+        
+    }
+
+    state->enpassant = NO_SQUARE;
+
+
+    if(getDouble(move)){
+        state->enpassant = target + ((state->side == WHITE) ? +8 : -8); 
+    }
+
+
+    if(getCastle(move)){
+        int rook = (state->side == WHITE) ? R : r;
+        switch(target)
+        {
+            case g1:
+                remove(state->board[rook], h1);
+                set(state->board[rook], f1);
+                break;
+
+            case c1:
+                remove(state->board[rook], a1);
+                set(state->board[rook], d1);
+                break;
+
+            case g8:
+                remove(state->board[rook], h8);
+                set(state->board[rook], f8);
+                break;
+
+            case c8:
+                remove(state->board[rook], a8);
+                set(state->board[rook], d8);
+                break;
+
+            default:
+                break;
+        }
+
+
+    }
+
+    // UPDATE CASTLING RIGHTS
+    switch(source)
+    {
+    case e1:
+        state->castle &= 1100;
+        break;
+
+    case e8:
+        state->castle &= 0011;
+        break;
+
+    case h1:
+        state->castle &= 1110;
+        break;
+
+    case a1:
+        state->castle &= 1101;
+        break;
+
+    case h8:
+        state->castle &= 1011;
+        break;
+
+    case a8:
+        state->castle &= 0111; 
+        break;
+
+    default:
+        break;
+    }
+
+    // CHECK FOR CHECK
+    int king = (state->side == WHITE) ? K : k;
+    if( isSquareAttacked(state, get_LSB_index(state->board[king]), !state->side)){
+        *state = temp;
+        return 0;
+    }
+
+    // Reevaluate occupancy
+    memset(state->occupancy, 0, sizeof(state->occupancy));
+
+    for(int piece = P; piece < K; piece++){
+        state->occupancy[WHITE] |= state->board[piece];
+    }
+
+   for(int piece = p; piece < k; piece++){
+        state->occupancy[BLACK] |= state->board[piece];
+    }
+
+    state->occupancy[BOTH] = state->occupancy[WHITE] | state->occupancy[BLACK];
+
+    // Change Side
+    state->side ^= 1;
+
+    return 1;
 }
 
 

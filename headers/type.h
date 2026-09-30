@@ -89,6 +89,8 @@ enum {
     a1, b1, c1, d1, e1, f1, g1, h1, NO_SQUARE
 };
 
+
+// CASTLE
 enum {
     WK = 1, WQ = 2,
     BK = 4, BQ = 8

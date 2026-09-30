@@ -2,7 +2,7 @@
 #include "pieces.h"
 #include "type.h"
 
-
+// is square <square> attacked by side <side>
 int isSquareAttacked(const gameState *s, int square, int side)
 {
     return 
