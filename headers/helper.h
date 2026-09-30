@@ -37,4 +37,8 @@ int makeMove(gameState *state, int move);
 int isSquareAttacked(const gameState *s, int square, int side);
 
 
+// Timer
+U64 getCurrentTimer(void);
+
+
 #endif

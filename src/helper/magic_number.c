@@ -40,7 +40,7 @@ static U64 get_magic_number(int square, int piece)
 
         for(int i=0; !fail && i < occupancy_size; i++)
         {
-            int magic_index = (int) ((magicNumber * occupancies[i]) >> (SIZE - relevent_bits));
+            int magic_index = (int) ((magicNumber * occupancies[i]) >> (64 - relevent_bits));
 
             if( used_attacks[magic_index] == 0ULL){
                 used_attacks[magic_index] = attacks[i];
@@ -65,14 +65,14 @@ static U64 get_magic_number(int square, int piece)
 void init_magicNumbers(void)
 {
     printf("\nROOK:\n");
-    for(int i=0; i < SIZE; i++){
+    for(int i=0; i < 64; i++){
         U64 magicNumber = get_magic_number(i, ROOK);
         printf("0x%016" PRIx64 "ULL,\n", magicNumber);
     }
 
     printf("\n\nBISHOP:\n");
 
-    for(int i=0; i < SIZE; i++){
+    for(int i=0; i < 64; i++){
         U64 magicNumber = get_magic_number(i, BISHOP);
         printf("0x%016" PRIx64 "ULL,\n", magicNumber);
 

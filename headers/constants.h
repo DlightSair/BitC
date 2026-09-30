@@ -89,7 +89,7 @@ static const int bishop_relevent_bit[64] = {
 // MAGIC NUMBER
 
 // Magic Number for Lookup via init_magicNumbers() 
-static const U64 rook_magicNumbers[SIZE] = {
+static const U64 rook_magicNumbers[64] = {
     0x1080002080400010ULL,
     0xc040001000402004ULL,
     0x0680100080200008ULL,

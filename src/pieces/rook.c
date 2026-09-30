@@ -75,7 +75,7 @@ U64 calculateRookAttacks(int square, U64 block)
 U64 getRookAttacks(int square, U64 block)
 {
     block &= maskAttacks.rook[square];
-    int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (SIZE - rook_relevent_bit[square]));
+    int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (64 - rook_relevent_bit[square]));
 
     return attackLookup.rook[square][magicIndex];
 }

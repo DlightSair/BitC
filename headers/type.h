@@ -28,11 +28,11 @@ typedef struct
 // Final attack lookup table. 
 typedef struct
 {
-    U64 pawn[2][SIZE];
-    U64 knight[SIZE];
-    U64 king[SIZE];
-    U64 bishop[SIZE][512]; // 2^9
-    U64 rook[SIZE][4096];  // 2^12
+    U64 pawn[2][64];
+    U64 knight[64];
+    U64 king[64];
+    U64 bishop[64][512]; // 2^9
+    U64 rook[64][4096];  // 2^12
 
 } attackTables;
 
@@ -40,8 +40,8 @@ typedef struct
 // Relevant-occupancy masks per square (edges excluded).
 typedef struct
 {
-    U64 bishop[SIZE];
-    U64 rook[SIZE];
+    U64 bishop[64];
+    U64 rook[64];
 
 } attackMasks;
 

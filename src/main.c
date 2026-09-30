@@ -3,6 +3,7 @@
 #include "init.h"
 #include "constants.h"
 #include "macros.h"
+#include "windows.h"
 
 
 // GLOBAL VARIBLE ATTACK LOOKUP 
@@ -25,7 +26,11 @@ int main()
     parseFEN(&state, test);
     
     printBoard(state);
-    generateMoves(&state, &move);
+
+    START_MEASURE_TIMER()
+    generateMoves(&state, &move); 
+    END_MEASURE_TIMER()
+    DISPLAY_MEASURED_TIMER()
 
     displayMove(&move);
 

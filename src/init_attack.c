@@ -4,7 +4,7 @@
 
 static void init_reaper_moves(void)
 {
-    for(int piece=0; piece < SIZE; piece++)
+    for(int piece=0; piece < 64; piece++)
     {
         attackLookup.pawn[WHITE][piece] = maskPawnAttacks(WHITE, piece);
         attackLookup.pawn[BLACK][piece] = maskPawnAttacks(BLACK, piece);
@@ -17,7 +17,7 @@ static void init_reaper_moves(void)
 
 static void init_masks(void)
 {
-    for(int i=0; i < SIZE; i++)
+    for(int i=0; i < 64; i++)
     {
         maskAttacks.rook[i] = maskRookAttacks(i);
         maskAttacks.bishop[i] = maskBishopAttacks(i);
@@ -27,7 +27,7 @@ static void init_masks(void)
 
 static void init_slider_move(void)
 {
-    for(int square=0; square < SIZE; square++)
+    for(int square=0; square < 64; square++)
     {
         int occupancy_size_rook = 1 << rook_relevent_bit[square];
         int occupancy_size_bishop = 1 << bishop_relevent_bit[square];
@@ -36,7 +36,7 @@ static void init_slider_move(void)
         {
             U64 block = set_occupancy(i, maskAttacks.rook[square]);
 
-            int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (SIZE - rook_relevent_bit[square]));
+            int magicIndex = (int) ( (rook_magicNumbers[square] * block) >> (64 - rook_relevent_bit[square]));
             attackLookup.rook[square][magicIndex] = calculateRookAttacks(square, block);
         }
 
@@ -44,7 +44,7 @@ static void init_slider_move(void)
         {
             U64 block = set_occupancy(i, maskAttacks.bishop[square]);
 
-            int magicIndex = (int) ( (bishop_magicNumbers[square] * block) >> (SIZE - bishop_relevent_bit[square]));
+            int magicIndex = (int) ( (bishop_magicNumbers[square] * block) >> (64 - bishop_relevent_bit[square]));
             attackLookup.bishop[square][magicIndex] = calculateBishopAttacks(square, block);
         }
 

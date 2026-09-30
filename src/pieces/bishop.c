@@ -71,7 +71,7 @@ U64 calculateBishopAttacks(int square, U64 block)
 U64 getBishopAttacks(int square, U64 block)
 {
     block &= maskAttacks.bishop[square];
-    int magicIndex = (int) ( (bishop_magicNumbers[square] * block) >> (SIZE - bishop_relevent_bit[square]));
+    int magicIndex = (int) ( (bishop_magicNumbers[square] * block) >> (64 - bishop_relevent_bit[square]));
 
     return attackLookup.bishop[square][magicIndex];
 }
