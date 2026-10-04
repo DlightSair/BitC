@@ -10,7 +10,7 @@ static void setBoardState(U64 bitboard[], int board[])
         {
             int LSB = get_LSB_index(bitboard[piece]);
             board[LSB] = piece;
-            remove(bitboard[piece], LSB);
+            clear_bit(bitboard[piece], LSB);
         }
     }
 }
@@ -76,7 +76,7 @@ void printBitBoard(U64 bitboard)
 
             if(!file) printf("  %d | ", BOARD_SIZE - rank);
 
-            printf("%d ", get( bitboard , square ));
+            printf("%d ", get_bit( bitboard , square ));
 
         }
 

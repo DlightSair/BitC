@@ -38,9 +38,10 @@ void generateKingMoves(const gameState *state, moveList *move)
     
     if( state->castle & ksCastleColor){
         if(!isSquareAttacked(state, f1 + kOffset, !state->side) 
-            && !isSquareAttacked(state, g1 + kOffset, !state->side))
+            && !isSquareAttacked(state, g1 + kOffset, !state->side)
+            && !isSquareAttacked(state, e1 + kOffset, !state->side))
         {
-            if(get(empty, f1 + kOffset) && get(empty, g1 + kOffset))
+            if(get_bit(empty, f1 + kOffset) && get_bit(empty, g1 + kOffset))
             {
                 addMove(move, encodeMove(e1+kOffset, g1+kOffset, piece, 0, 0, 0, 0, 1));
             }
@@ -48,14 +49,14 @@ void generateKingMoves(const gameState *state, moveList *move)
     }
 
     if( state->castle & qsCastleColor){
-        if(!isSquareAttacked(state, b1 + kOffset, !state->side) 
+        if(!isSquareAttacked(state, e1 + kOffset, !state->side) 
             && !isSquareAttacked(state, c1 + kOffset, !state->side) 
             && !isSquareAttacked(state, d1 + kOffset, !state->side))
         {
             
-            if(get(empty, b1 + kOffset) && get(empty, c1 + kOffset) && get(empty, d1 + kOffset))
+            if(get_bit(empty, b1 + kOffset) && get_bit(empty, c1 + kOffset) && get_bit(empty, d1 + kOffset))
             {
-                addMove(move, encodeMove(e1+kOffset, b1+kOffset, piece, 0, 0, 0, 0, 1));
+                addMove(move, encodeMove(e1+kOffset, c1+kOffset, piece, 0, 0, 0, 0, 1));
             }
         }
     }
@@ -71,18 +72,18 @@ void generateKingMoves(const gameState *state, moveList *move)
         while(kingAttack){
             int attack_lsb = get_LSB_index(kingAttack);
 
-            if(get(state->occupancy[!state->side], attack_lsb))
+            if(get_bit(state->occupancy[!state->side], attack_lsb))
             {
                 addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 1, 0, 0, 0));
             } 
-            else if(get(empty, attack_lsb))
+            else if(get_bit(empty, attack_lsb))
             {
                 addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 0, 0, 0, 0));
             }
 
-            remove(kingAttack, attack_lsb);
+            clear_bit(kingAttack, attack_lsb);
         }
 
-        remove(kingBoard, lsb);
+        clear_bit(kingBoard, lsb);
     }
 }

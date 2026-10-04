@@ -92,18 +92,18 @@ void generateRookAttacks(U64 RookBoard, U64 occupancy[], int side)
         while(RookAttack){
             int attack_lsb = get_LSB_index(RookAttack);
 
-            if(get(occupancy[!side], attack_lsb))
+            if(get_bit(occupancy[!side], attack_lsb))
             {
                 printf("Knight Capture %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
             } 
-            else if(get(~occupancy[BOTH], attack_lsb))
+            else if(get_bit(~occupancy[BOTH], attack_lsb))
             {
                 printf("Knight %s:%s\n", squareToString[lsb], squareToString[attack_lsb]);
             }
 
-            remove(RookAttack, attack_lsb);
+            clear_bit(RookAttack, attack_lsb);
         }
 
-        remove(RookBoard, lsb);
+        clear_bit(RookBoard, lsb);
     }
 }

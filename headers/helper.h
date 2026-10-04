@@ -41,4 +41,7 @@ int isSquareAttacked(const gameState *s, int square, int side);
 U64 getCurrentTimer(void);
 
 
+// perft
+void perft_driver(gameState state, int depth, U64 *nodes);
+
 #endif

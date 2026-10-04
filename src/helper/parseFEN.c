@@ -24,7 +24,7 @@ void parseFEN(gameState *state, char *fen)
 
         else if((fen[index] >= 'a' && fen[index] <= 'z') || (fen[index] >= 'A' && fen[index] <= 'Z'))
         {
-            set(state->board[asciiToPieces[fen[index]]], square);
+            set_bit(state->board[asciiToPieces[fen[index]]], square);
             square++;
         }
 

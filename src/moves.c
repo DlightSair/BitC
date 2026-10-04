@@ -35,18 +35,18 @@ int makeMove(gameState *state, int move)
     int target = getTarget(move);
     int source = getSource(move);
 
-    remove(state->board[getPiece(move)], source);
-    set(state->board[getPiece(move)], target);
+    clear_bit(state->board[getPiece(move)], source);
+    set_bit(state->board[getPiece(move)], target);
 
     if(getCapture(move)){
-        // Remove from opposite board
+        // clear_bit from opposite board
         int start_piece = (state->side == WHITE) ? p : P; 
         int end_piece = (state->side == WHITE) ? k : K;
 
         for(int piece = start_piece; piece <= end_piece; piece++)
         {
-            if(get(state->board[piece], target)){
-                remove(state->board[piece], target);
+            if(get_bit(state->board[piece], target)){
+                clear_bit(state->board[piece], target);
                 break;
             }
         }
@@ -54,14 +54,14 @@ int makeMove(gameState *state, int move)
 
 
     if(getProm(move)){
-        remove(state->board[getPiece(move)], target);
-        set(state->board[ getProm(move) ], target);
+        clear_bit(state->board[getPiece(move)], target);
+        set_bit(state->board[ getProm(move) ], target);
     }
 
 
     if(getEnpassant(move)){
-        (state->side == WHITE) ? remove(state->board[ p ], target + 8) :
-                                 remove(state->board[ P ], target - 8) ;
+        (state->side == WHITE) ? clear_bit(state->board[ p ], target + 8) :
+                                 clear_bit(state->board[ P ], target - 8) ;
         
     }
 
@@ -78,23 +78,23 @@ int makeMove(gameState *state, int move)
         switch(target)
         {
             case g1:
-                remove(state->board[rook], h1);
-                set(state->board[rook], f1);
+                clear_bit(state->board[rook], h1);
+                set_bit(state->board[rook], f1);
                 break;
 
             case c1:
-                remove(state->board[rook], a1);
-                set(state->board[rook], d1);
+                clear_bit(state->board[rook], a1);
+                set_bit(state->board[rook], d1);
                 break;
 
             case g8:
-                remove(state->board[rook], h8);
-                set(state->board[rook], f8);
+                clear_bit(state->board[rook], h8);
+                set_bit(state->board[rook], f8);
                 break;
 
             case c8:
-                remove(state->board[rook], a8);
-                set(state->board[rook], d8);
+                clear_bit(state->board[rook], a8);
+                set_bit(state->board[rook], d8);
                 break;
 
             default:
@@ -104,36 +104,72 @@ int makeMove(gameState *state, int move)
 
     }
 
-    // UPDATE CASTLING RIGHTS
+    // UPDATE CASTLING RIGHTS 
+
+    // ROOK OR KING MOVED
     switch(source)
     {
     case e1:
-        state->castle &= 1100;
+        state->castle &= 12; // 1100 : 12
         break;
 
     case e8:
-        state->castle &= 0011;
+        state->castle &= 3; // 0011 : 3
         break;
 
     case h1:
-        state->castle &= 1110;
+        state->castle &= 15; // 1110 : 14
         break;
 
     case a1:
-        state->castle &= 1101;
+        state->castle &= 13; // 1101 : 13
         break;
 
     case h8:
-        state->castle &= 1011;
+        state->castle &= 11; // 1011 : 11
         break;
 
     case a8:
-        state->castle &= 0111; 
+        state->castle &= 7;  // 0111 : 7
         break;
 
     default:
         break;
     }
+
+    // ROOK CAPTURED
+    switch (target)
+    {
+    case h1:
+        state->castle &= 15; // 1110 : 14
+        break;
+
+    case a1:
+        state->castle &= 13; // 1101 : 13
+        break;
+
+    case h8:
+        state->castle &= 11; // 1011 : 11
+        break;
+
+    case a8:
+        state->castle &= 7;  // 0111 : 7
+        break;
+    }
+
+    
+    // Reevaluate occupancy
+    memset(state->occupancy, 0, sizeof(state->occupancy));
+
+    for(int piece = P; piece <= K; piece++){
+        state->occupancy[WHITE] |= state->board[piece];
+    }
+
+   for(int piece = p; piece <= k; piece++){
+        state->occupancy[BLACK] |= state->board[piece];
+    }
+
+    state->occupancy[BOTH] = state->occupancy[WHITE] | state->occupancy[BLACK];
 
     // CHECK FOR CHECK
     int king = (state->side == WHITE) ? K : k;
@@ -141,19 +177,6 @@ int makeMove(gameState *state, int move)
         *state = temp;
         return 0;
     }
-
-    // Reevaluate occupancy
-    memset(state->occupancy, 0, sizeof(state->occupancy));
-
-    for(int piece = P; piece < K; piece++){
-        state->occupancy[WHITE] |= state->board[piece];
-    }
-
-   for(int piece = p; piece < k; piece++){
-        state->occupancy[BLACK] |= state->board[piece];
-    }
-
-    state->occupancy[BOTH] = state->occupancy[WHITE] | state->occupancy[BLACK];
 
     // Change Side
     state->side ^= 1;
@@ -186,19 +209,19 @@ void generateMoves(const gameState *state, moveList *move)
             while(attack){
                 int attack_lsb = get_LSB_index(attack);
 
-                if(get(state->occupancy[!state->side], attack_lsb))
+                if(get_bit(state->occupancy[!state->side], attack_lsb))
                 {
                     addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 1, 0, 0, 0));
                 } 
-                else if(get(~state->occupancy[BOTH], attack_lsb))
+                else if(get_bit(~state->occupancy[BOTH], attack_lsb))
                 {
                     addMove(move, encodeMove(lsb, attack_lsb, piece, 0, 0, 0, 0, 0));
                 }
 
-                remove(attack, attack_lsb);
+                clear_bit(attack, attack_lsb);
             }
 
-            remove(board, lsb);
+            clear_bit(board, lsb);
         }
     }
 

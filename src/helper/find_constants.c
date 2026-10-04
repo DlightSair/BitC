@@ -37,7 +37,7 @@ void displayNotFile(void)
             {
                 int square = rank*BOARD_SIZE + file;
                 if( file == k){
-                    remove(not_file, square);
+                    clear_bit(not_file, square);
                 }
             }
             printf("\n");
@@ -62,7 +62,7 @@ void displayTwoNotFile(void)
         {
             int square = rank*BOARD_SIZE + file;
             if( file == 6 || file == 7){
-                remove(not_file, square);
+                clear_bit(not_file, square);
             }
         }
 

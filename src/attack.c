@@ -33,7 +33,7 @@ void printAttackedBoard(const gameState *state)
             int square = r*BOARD_SIZE + f;
             
             if( isSquareAttacked(state, square, !state->side) )
-                set(attack, square);
+                set_bit(attack, square);
 
         }
     }

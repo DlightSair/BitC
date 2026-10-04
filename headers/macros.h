@@ -8,13 +8,13 @@
 // Operations MACROS
 
 // Get bit on (square) position in bitboard
-#define get(bitboard, square) (((bitboard) & (1ULL << (square))) ? 1: 0)    
+#define get_bit(bitboard, square) (((bitboard) & (1ULL << (square))) ? 1: 0)    
 
 // Change bit on (square) position to 1
-#define set(bitboard, square) ((bitboard) |= (1ULL << (square)))             
+#define set_bit(bitboard, square) ((bitboard) |= (1ULL << (square)))             
 
 // Change bit on (square) position to 0
-#define remove(bitboard, square) ((bitboard) &= ~(1ULL << (square)))        
+#define clear_bit(bitboard, square) ((bitboard) &= ~(1ULL << (square)))        
 
 
 
@@ -88,17 +88,17 @@
 
 
 
-#define START_MEASURE_TIMER()                                   \
+#define START_MEASURE_TIMER(TIMER_MEASURE_START)                                   \
     LARGE_INTEGER MEASURE_TIMER_FREQUENCY;                      \
     QueryPerformanceFrequency(&MEASURE_TIMER_FREQUENCY);        \
     U64 TIMER_MEASURE_START = getCurrentTimer(); 
 
 
-#define END_MEASURE_TIMER()                        \
+#define END_MEASURE_TIMER(TIMER_MEASURE_END)                        \
     U64 TIMER_MEASURE_END = getCurrentTimer();
 
 
-#define DISPLAY_MEASURED_TIMER()                                                    \
+#define DISPLAY_MEASURED_TIMER(TIMER_MEASURE_START, TIMER_MEASURE_END)                                                    \
                                                                                     \
     double TIMER_MEASURED_SECONDS =                                                 \
         (double) (TIMER_MEASURE_END - TIMER_MEASURE_START) /                        \

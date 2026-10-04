@@ -22,26 +22,24 @@ int main()
     char *startingPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     parseFEN(&state, startingPostionFEN);
 
-    char *test = "r3k2r/pppp1ppp/2n2n2/4P3/1B6/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 4 5";
+    char *test = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     parseFEN(&state, test);
     
+    generateMoves(&state, &move);
     printBoard(state);
-
-    START_MEASURE_TIMER()
-    generateMoves(&state, &move); 
-    END_MEASURE_TIMER()
-    DISPLAY_MEASURED_TIMER()
-
     displayMove(&move);
 
+    U64 node = 0;
+
+    START_MEASURE_TIMER(start_time)
+    perft_driver(state, 6, &node);
+    END_MEASURE_TIMER(end_time)
+
+    printf("Node: %d\n", node);
+    DISPLAY_MEASURED_TIMER(start_time, end_time)
+
     
-    if(makeMove(&state, 2099248)){
-        printf("Move Successful. \n");
-    }else{
-        printf("Move Unsuccessful. \n");
-    }
- 
-    printBoard(state); 
+
 
     return 0;
 }

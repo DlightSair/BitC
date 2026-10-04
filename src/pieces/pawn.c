@@ -62,17 +62,17 @@ void generatePawnMoves(const gameState *state, moveList *move)
         int secondPushSquare = firstPushSquare + shift_offset; 
 
         
-        int isSinglePushValid = get(empty, firstPushSquare);
+        int isSinglePushValid = get_bit(empty, firstPushSquare);
         int isDoublePushValid = isSinglePushValid 
-                            && get(empty, secondPushSquare)
-                            && get(rank_w2_b7, pieceSquare);
+                            && get_bit(empty, secondPushSquare)
+                            && get_bit(rank_w2_b7, pieceSquare);
 
         // Pawn Promotion
-        if( isSinglePushValid && get(rank_w8_b1, firstPushSquare) ) {
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, q, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, r, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, b, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, n, 0, 0, 0, 0));
+        if( isSinglePushValid && get_bit(rank_w8_b1, firstPushSquare) ) {
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? Q : q, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? R : r, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? B : b, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? N : n, 0, 0, 0, 0));
         } 
         // Just Push 
         else if( isSinglePushValid ) {
@@ -84,7 +84,7 @@ void generatePawnMoves(const gameState *state, moveList *move)
             addMove(move, encodeMove(pieceSquare, secondPushSquare, piece, 0, 0, 1, 0, 0));
         }
 
-        if( enpassant != NO_SQUARE && get(attackLookup.pawn[side][pieceSquare], enpassant) ) {
+        if( enpassant != NO_SQUARE && get_bit(attackLookup.pawn[side][pieceSquare], enpassant) ) {
             addMove(move, encodeMove(pieceSquare, enpassant, piece, 0, 0, 0, 1, 0));
         }
         
@@ -95,20 +95,20 @@ void generatePawnMoves(const gameState *state, moveList *move)
             int attack_lsb = get_LSB_index(attack);
 
             // Promotion
-            if( get(rank_w8_b1, attack_lsb) ){
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, q, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, r, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, b, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, n, 1, 0, 0, 0));
+            if( get_bit(rank_w8_b1, attack_lsb) ){
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? Q : q, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? R : r, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? B : b, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? N : n, 1, 0, 0, 0));
             }
             else {
                 addMove(move, encodeMove(pieceSquare, attack_lsb, piece, 0, 1, 0, 0, 0));
             }
 
-            remove(attack, attack_lsb);            
+            clear_bit(attack, attack_lsb);            
         }
 
-        remove(pawnBoard, pieceSquare);
+        clear_bit(pawnBoard, pieceSquare);
     }
 
 }
