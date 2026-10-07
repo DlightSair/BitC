@@ -22,23 +22,13 @@ int main()
     char *startingPostionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     parseFEN(&state, startingPostionFEN);
 
-    char *test = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    char *test = "1r2k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P1RPP/R2Q2K1 w kq - 0 1";
     parseFEN(&state, test);
     
-    generateMoves(&state, &move);
     printBoard(state);
+
+    generateMoves(&state, &move);
     displayMove(&move);
-
-    U64 node = 0;
-
-    START_MEASURE_TIMER(start_time)
-    perft_driver(state, 6, &node);
-    END_MEASURE_TIMER(end_time)
-
-    printf("Node: %d\n", node);
-    DISPLAY_MEASURED_TIMER(start_time, end_time)
-
-    
 
 
     return 0;

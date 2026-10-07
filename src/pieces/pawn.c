@@ -69,10 +69,10 @@ void generatePawnMoves(const gameState *state, moveList *move)
 
         // Pawn Promotion
         if( isSinglePushValid && get_bit(rank_w8_b1, firstPushSquare) ) {
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? Q : q, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? R : r, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? B : b, 0, 0, 0, 0));
-            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, side == WHITE ? N : n, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, q, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, r, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, b, 0, 0, 0, 0));
+            addMove(move, encodeMove(pieceSquare, firstPushSquare, piece, n, 0, 0, 0, 0));
         } 
         // Just Push 
         else if( isSinglePushValid ) {
@@ -96,10 +96,10 @@ void generatePawnMoves(const gameState *state, moveList *move)
 
             // Promotion
             if( get_bit(rank_w8_b1, attack_lsb) ){
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? Q : q, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? R : r, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? B : b, 1, 0, 0, 0));
-                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, side == WHITE ? N : n, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, q, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, r, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, b, 1, 0, 0, 0));
+                addMove(move, encodeMove(pieceSquare, attack_lsb, piece, n, 1, 0, 0, 0));
             }
             else {
                 addMove(move, encodeMove(pieceSquare, attack_lsb, piece, 0, 1, 0, 0, 0));

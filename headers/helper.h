@@ -44,4 +44,8 @@ U64 getCurrentTimer(void);
 // perft
 void perft_driver(gameState state, int depth, U64 *nodes);
 
+
+// Parse UCI
+int UCI_to_move(const gameState *state, char *UCI_move);
+
 #endif

@@ -55,7 +55,7 @@ int makeMove(gameState *state, int move)
 
     if(getProm(move)){
         clear_bit(state->board[getPiece(move)], target);
-        set_bit(state->board[ getProm(move) ], target);
+        set_bit(state->board[(getProm(move) - (state->side == WHITE ? 6 : 0))], target);
     }
 
 
