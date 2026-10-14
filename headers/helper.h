@@ -39,7 +39,8 @@ int isSquareAttacked(const gameState *s, int square, int side);
 
 // Timer
 U64 getCurrentTimer(void);
-
+double time_elapsed(U64 start, U64 end);
+void DISPLAY_MEASURED_TIME(U64 TIMER_MEASURE_START, U64 TIMER_MEASURE_END);
 
 // perft
 void perft_driver(gameState state, int depth, U64 *nodes);
@@ -47,5 +48,9 @@ void perft_driver(gameState state, int depth, U64 *nodes);
 
 // Parse UCI
 int UCI_to_move(const gameState *state, char *UCI_move);
+void uciLoop(gameState *state);
+
+// ALGO
+int getBestMove(gameState *state, int depth);
 
 #endif

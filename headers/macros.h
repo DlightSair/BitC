@@ -88,33 +88,4 @@
 
 
 
-#define START_MEASURE_TIMER(TIMER_MEASURE_START)                                   \
-    LARGE_INTEGER MEASURE_TIMER_FREQUENCY;                      \
-    QueryPerformanceFrequency(&MEASURE_TIMER_FREQUENCY);        \
-    U64 TIMER_MEASURE_START = getCurrentTimer(); 
-
-
-#define END_MEASURE_TIMER(TIMER_MEASURE_END)                        \
-    U64 TIMER_MEASURE_END = getCurrentTimer();
-
-
-#define DISPLAY_MEASURED_TIMER(TIMER_MEASURE_START, TIMER_MEASURE_END)                                                    \
-                                                                                    \
-    double TIMER_MEASURED_SECONDS =                                                 \
-        (double) (TIMER_MEASURE_END - TIMER_MEASURE_START) /                        \
-        (double) MEASURE_TIMER_FREQUENCY.QuadPart;                                  \
-                                                                                    \
-    if(TIMER_MEASURED_SECONDS < 1e-6)                                               \
-        printf("MEASURED TIMER: %.3f ns\n", TIMER_MEASURED_SECONDS * 1e9);          \
-                                                                                    \
-    else if(TIMER_MEASURED_SECONDS < 1e-3)                                          \
-        printf("MEASURED TIMER: %.3f us\n", TIMER_MEASURED_SECONDS * 1e6);          \
-                                                                                    \
-    else if(TIMER_MEASURED_SECONDS < 1)                                             \
-        printf("MEASURED TIMER: %.3f ms\n", TIMER_MEASURED_SECONDS * 1e3);          \
-                                                                                    \
-    else                                                                            \
-        printf("MEASURED TIMER: %.3f s\n", TIMER_MEASURED_SECONDS);                 
-
-
 #endif

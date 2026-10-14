@@ -118,7 +118,7 @@ int makeMove(gameState *state, int move)
         break;
 
     case h1:
-        state->castle &= 15; // 1110 : 14
+        state->castle &= 14; // 1110 : 14
         break;
 
     case a1:
@@ -141,7 +141,7 @@ int makeMove(gameState *state, int move)
     switch (target)
     {
     case h1:
-        state->castle &= 15; // 1110 : 14
+        state->castle &= 14; // 1110 : 14
         break;
 
     case a1:
