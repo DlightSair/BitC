@@ -14,13 +14,52 @@ typedef struct {
     U64 nodes;
 } SearchInfo;
 
+
+static int quiescence(gameState *state, int alpha, int beta, SearchInfo *info)
+{
+    info->nodes++;
+
+    int standPat = (state->side == WHITE) ?
+        evaluate(state) : -evaluate(state);
+
+    if(standPat >= beta) return beta;
+    if(standPat > alpha) alpha = standPat;
+
+    moveList moves = {.count = 0};
+    generateMoves(state, &moves);
+
+    gameState saved = *state;
+
+    for(int i=0; i < moves.count; i++)
+    {
+        int move = moves.move[i];
+
+        if(!getCapture(move) && !getEnpassant(move) && !getProm(move)){
+            continue;
+        }
+
+        if(!makeMove(state, move)){
+            continue;
+        }
+
+        int score = -quiescence(state, -beta, -alpha, info);
+        *state = saved;
+
+        if(score >= beta) return beta;
+        if(score > alpha) alpha = score;
+    }
+
+    return alpha;
+}
+
 static int negamax(gameState *state, int alpha, int beta, int depth, int ply, SearchInfo *info)
 {
+
     if(!depth){
-        info->nodes++;
-        return (state->side == WHITE) ?
-            evaluate(state) : -evaluate(state);
+        return quiescence(state, alpha, beta, info);
     }
+
+    info->nodes++;
 
     moveList moves = {.count = 0};
     generateMoves(state, &moves);
