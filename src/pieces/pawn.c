@@ -85,7 +85,7 @@ void generatePawnMoves(const gameState *state, moveList *move)
         }
 
         if( enpassant != NO_SQUARE && get_bit(attackLookup.pawn[side][pieceSquare], enpassant) ) {
-            addMove(move, encodeMove(pieceSquare, enpassant, piece, 0, 0, 0, 1, 0));
+            addMove(move, encodeMove(pieceSquare, enpassant, piece, 0, 1, 0, 1, 0));
         }
         
         // Pawn Attacks
