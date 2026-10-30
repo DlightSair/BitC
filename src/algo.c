@@ -118,6 +118,10 @@ static int quiescence(gameState *state, int alpha, int beta, SearchInfo *info)
 
 static int negamax(gameState *state, int alpha, int beta, int depth, int ply, SearchInfo *info)
 {
+    if(ply && isDraw(state)){
+        info->nodes++;
+        return 0;
+    }
 
     if(!depth){
         return quiescence(state, alpha, beta, info);
@@ -146,7 +150,9 @@ static int negamax(gameState *state, int alpha, int beta, int depth, int ply, Se
         }
         legal++;
 
+        pushHistory(state->hash);
         int score = -negamax(state, -beta, -alpha, depth-1, ply+1, info);
+        popHistory();
         *state = saved;
 
         if(score > alpha){

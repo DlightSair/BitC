@@ -5,6 +5,7 @@
 #include "macros.h"
 #include <windows.h>
 #include "evaluation.h"
+#include "zobrist.h"
 
 
 // GLOBAL VARIBLE ATTACK LOOKUP
@@ -14,6 +15,7 @@ attackMasks maskAttacks;
 int main()
 {
     init_attack_lookup();
+    initZobrist();
 
     gameState state;
     moveList move = {

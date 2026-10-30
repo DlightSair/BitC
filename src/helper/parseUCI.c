@@ -65,6 +65,8 @@ static void parsePosition(gameState *state, char *cmd)
     char *ptr = cmd + strlen("position");
     while(*ptr == ' ') ptr++;
 
+    clearHistory();
+
     if(!strncmp(ptr, "startpos", 8)){
         parseFEN(state, (char *) startFEN);
         ptr += 8;
@@ -95,6 +97,8 @@ static void parsePosition(gameState *state, char *cmd)
         return;
     }
 
+    pushHistory(state->hash);
+
     char *moves = strstr(ptr, "moves");
     if(!moves) return;
     moves += 5;
@@ -111,6 +115,7 @@ static void parsePosition(gameState *state, char *cmd)
 
         int move = UCI_to_move(state, token);
         if(move == -1 || !makeMove(state, move)) break;
+        pushHistory(state->hash);
     }
 }
 

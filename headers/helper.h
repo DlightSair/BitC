@@ -50,6 +50,12 @@ void perft_driver(gameState state, int depth, U64 *nodes);
 int UCI_to_move(const gameState *state, char *UCI_move);
 void uciLoop(gameState *state);
 
+// Draw detection (repetition, 50 move rule, insufficient material)
+void clearHistory(void);
+void pushHistory(U64 hash);
+void popHistory(void);
+int isDraw(const gameState *state);
+
 // ALGO
 int getBestMove(gameState *state, int depth);
 

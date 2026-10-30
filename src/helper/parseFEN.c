@@ -1,6 +1,8 @@
 #include "helper.h"
 #include "macros.h"
+#include "zobrist.h"
 #include <string.h>
+#include <stdlib.h>
 
 
 void parseFEN(gameState *state, char *fen)
@@ -58,6 +60,18 @@ void parseFEN(gameState *state, char *fen)
         index += 3;
     }
 
+    state->half = 0;
+    state->full = 1;
+
+    if(index < (int) strlen(fen))
+    {
+        state->half = atoi(fen + index);
+
+        while(fen[index] && fen[index] != ' ') index++;
+        if(fen[index] == ' ') index++;
+
+        if(fen[index]) state->full = atoi(fen + index);
+    }
 
 
     for(int i=P; i<=K; i++){
@@ -69,4 +83,6 @@ void parseFEN(gameState *state, char *fen)
     }
 
     state->occupancy[BOTH] = state->occupancy[BLACK] | state->occupancy[WHITE];
+
+    state->hash = generateHash(state);
 }

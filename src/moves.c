@@ -3,6 +3,7 @@
 #include "pieces.h"
 #include "macros.h"
 #include "constants.h"
+#include "zobrist.h"
 #include <string.h>
 
 
@@ -35,8 +36,15 @@ int makeMove(gameState *state, int move)
     int target = getTarget(move);
     int source = getSource(move);
 
+    U64 hash = state->hash;
+    hash ^= castleKeys[state->castle];
+    hash ^= enpassantKeys[state->enpassant];
+
     clear_bit(state->board[getPiece(move)], source);
     set_bit(state->board[getPiece(move)], target);
+
+    hash ^= pieceKeys[getPiece(move)][source];
+    hash ^= pieceKeys[getPiece(move)][target];
 
     if(getCapture(move)){
         // clear_bit from opposite board
@@ -47,6 +55,7 @@ int makeMove(gameState *state, int move)
         {
             if(get_bit(state->board[piece], target)){
                 clear_bit(state->board[piece], target);
+                hash ^= pieceKeys[piece][target];
                 break;
             }
         }
@@ -54,15 +63,26 @@ int makeMove(gameState *state, int move)
 
 
     if(getProm(move)){
+        int promotedPiece = getProm(move) - (state->side == WHITE ? 6 : 0);
+
         clear_bit(state->board[getPiece(move)], target);
-        set_bit(state->board[(getProm(move) - (state->side == WHITE ? 6 : 0))], target);
+        set_bit(state->board[promotedPiece], target);
+
+        hash ^= pieceKeys[getPiece(move)][target];
+        hash ^= pieceKeys[promotedPiece][target];
     }
 
 
     if(getEnpassant(move)){
-        (state->side == WHITE) ? clear_bit(state->board[ p ], target + 8) :
-                                 clear_bit(state->board[ P ], target - 8) ;
-        
+        if(state->side == WHITE){
+            clear_bit(state->board[ p ], target + 8);
+            hash ^= pieceKeys[p][target + 8];
+        }
+        else{
+            clear_bit(state->board[ P ], target - 8);
+            hash ^= pieceKeys[P][target - 8];
+        }
+
     }
 
     state->enpassant = NO_SQUARE;
@@ -80,21 +100,25 @@ int makeMove(gameState *state, int move)
             case g1:
                 clear_bit(state->board[rook], h1);
                 set_bit(state->board[rook], f1);
+                hash ^= pieceKeys[rook][h1] ^ pieceKeys[rook][f1];
                 break;
 
             case c1:
                 clear_bit(state->board[rook], a1);
                 set_bit(state->board[rook], d1);
+                hash ^= pieceKeys[rook][a1] ^ pieceKeys[rook][d1];
                 break;
 
             case g8:
                 clear_bit(state->board[rook], h8);
                 set_bit(state->board[rook], f8);
+                hash ^= pieceKeys[rook][h8] ^ pieceKeys[rook][f8];
                 break;
 
             case c8:
                 clear_bit(state->board[rook], a8);
                 set_bit(state->board[rook], d8);
+                hash ^= pieceKeys[rook][a8] ^ pieceKeys[rook][d8];
                 break;
 
             default:
@@ -178,6 +202,21 @@ int makeMove(gameState *state, int move)
         return 0;
     }
 
+    // Fifty move counter resets on pawn moves and captures
+    if(getPiece(move) == P || getPiece(move) == p || getCapture(move)){
+        state->half = 0;
+    }
+    else{
+        state->half++;
+    }
+
+    if(state->side == BLACK) state->full++;
+
+    hash ^= castleKeys[state->castle];
+    hash ^= enpassantKeys[state->enpassant];
+    hash ^= sideKey;
+    state->hash = hash;
+
     // Change Side
     state->side ^= 1;
 
@@ -185,7 +224,7 @@ int makeMove(gameState *state, int move)
 }
 
 
-// Pseudo-Legal moves ---- checkLegalMove will be made later
+// Pseudo-Legal moves 
 void generateMoves(const gameState *state, moveList *move)
 {
     generatePawnMoves(state, move);

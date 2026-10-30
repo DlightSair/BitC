@@ -20,6 +20,7 @@ typedef struct
     int enpassant;
     int half;
     int full;
+    U64 hash;
 } gameState;
 
 
