@@ -4,20 +4,25 @@
 #include "constants.h"
 #include "macros.h"
 
-int evaluation_score[] = {100, 300, 350, 500, 1000, 10000,
-                    -100, -300, -350, -500, -1000, -10000};
+const int material_score_mg[6] = {100, 300, 350, 500, 1000, 0};
+const int material_score_eg[6] = {100, 300, 350, 500, 1000, 0};
+
+const int phase_weight[6] = {0, 1, 1, 2, 4, 0};
+#define MAX_PHASE 24
+
+#define TEMPO_BONUS 10
 
 const int positional_score[6][64] = 
 {
     // PAWN
     {
-    90,  90,  90,  90,  90,  90,  90,  90,
+    0,    0,   0,   0,   0,   0,   0,   0,
     30,  30,  30,  40,  40,  30,  30,  30,
     20,  20,  20,  30,  30,  30,  20,  20,
     10,  10,  10,  20,  20,  10,  10,  10,
      5,   5,  10,  20,  20,   5,   5,   5,
      0,   0,   0,   5,   5,   0,   0,   0,
-     0,   0,   0, -10, -10,   0,   0,   0,
+     10, 10,  10, -10, -10,  10,  10,  10,
      0,   0,   0,   0,   0,   0,   0,   0
     },
 
@@ -60,19 +65,51 @@ const int positional_score[6][64] =
     },
 
     // QUEEN
-    {0},
-
-    // KING
     {
-     0,   0,   0,   0,   0,   0,   0,   0,
-     0,   0,   5,   5,   5,   5,   0,   0,
-     0,   5,   5,  10,  10,   5,   5,   0,
-     0,   5,  10,  20,  20,  10,   5,   0,
-     0,   5,  10,  20,  20,  10,   5,   0,
-     0,   0,   5,  10,  10,   5,   0,   0,
-     0,   5,   5,  -5,  -5,   0,   5,   0,
-     0,   0,   5,   0, -15,   0,  10,   0
+   -20, -10, -10,  -5,  -5, -10, -10, -20,
+   -10,   0,   0,   0,   0,   0,   0, -10,
+   -10,   0,   5,   5,   5,   5,   0, -10,
+    -5,   0,   5,   5,   5,   5,   0,  -5,
+    -5,   0,   5,   5,   5,   5,   0,  -5,
+   -10,   5,   5,   5,   5,   5,   0, -10,
+   -10,   0,   5,   0,   0,   0,   0, -10,
+   -20, -10, -10,  -5,  -5, -10, -10, -20
+    },
+
+    {
+   -30, -40, -40, -50, -50, -40, -40, -30,
+   -30, -40, -40, -50, -50, -40, -40, -30,
+   -30, -40, -40, -50, -50, -40, -40, -30,
+   -30, -40, -40, -50, -50, -40, -40, -30,
+   -20, -30, -30, -40, -40, -30, -30, -20,
+   -10, -20, -20, -20, -20, -20, -20, -10,
+    20,  20,   0,   0,   0,   0,  20,  20,
+    20,  30,  10,   0,   0,  10,  30,  20
     }
+};
+
+const int pawn_endgame_score[64] =
+{
+      0,   0,   0,   0,   0,   0,   0,   0,
+    100, 100, 100, 100, 100, 100, 100, 100,
+     60,  60,  60,  60,  60,  60,  60,  60,
+     35,  35,  35,  35,  35,  35,  35,  35,
+     20,  20,  20,  20,  20,  20,  20,  20,
+     10,  10,  10,  10,  10,  10,  10,  10,
+      0,   0,   0,   0,   0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0
+};
+
+const int king_endgame_score[64] =
+{
+    -30, -20, -15, -10, -10, -15, -20, -30,
+    -20, -10,  -5,   0,   0,  -5, -10, -20,
+    -15,  -5,  10,  15,  15,  10,  -5, -15,
+    -10,   0,  15,  20,  20,  15,   0, -10,
+    -10,   0,  15,  20,  20,  15,   0, -10,
+    -15,  -5,  10,  15,  15,  10,  -5, -15,
+    -20, -15,   0,   0,   0,   0, -15, -20,
+    -30, -20, -15, -15, -15, -15, -20, -30
 };
 
 
@@ -89,27 +126,48 @@ const int mirror_score[128] =
 };
 
 
-                    
+static int getEndgamePositional(int type, int square)
+{
+    if(type == PAWN) return pawn_endgame_score[square];
+    if(type == KING) return king_endgame_score[square];
+
+    return positional_score[type][square];
+}
+
+
+// Score from White's POV
 int evaluate(const gameState *state)
 {
-    int score = 0;
+    int middlegame = 0;
+    int endgame = 0;
+    int phase = 0;
 
-    for(int piece = P; piece<=k; piece++)
+    for(int piece = P; piece <= k; piece++)
     {
+        int type = (piece <= K) ? piece : piece - 6;
+        int sign = (piece <= K) ? 1 : -1;
+
         U64 board_copy = state->board[piece];
+
+        phase += count_bits(board_copy) * phase_weight[type];
 
         while(board_copy){
             int lsb = get_LSB_index(board_copy);
 
-            score += evaluation_score[piece];
+            int square = (piece <= K) ? lsb : mirror_score[lsb];
 
-            score += (piece <= K) ? 
-                    + positional_score[piece][lsb] : 
-                    - positional_score[piece-6][mirror_score[lsb]];
+            middlegame += sign * (material_score_mg[type] + positional_score[type][square]);
+            endgame    += sign * (material_score_eg[type] + getEndgamePositional(type, square));
 
             clear_bit(board_copy, lsb);
         }
     }
+
+    if(phase > MAX_PHASE) phase = MAX_PHASE;   // promotions can add extra pieces
+
+    int score = (middlegame * phase + endgame * (MAX_PHASE - phase)) / MAX_PHASE;
+
+    score += (state->side == WHITE) ? TEMPO_BONUS : -TEMPO_BONUS;
 
     return score;
 }
